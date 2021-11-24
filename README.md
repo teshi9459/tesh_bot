@@ -1,3 +1,8 @@
 # tesh_bot
 
-update
+
+
+
+(only available in German and on German servers)
+more infos soon
+
