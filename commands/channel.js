@@ -37,7 +37,7 @@ module.exports = {
       const one = true;
      }
      if (!one) {
-      interaction.reply("<#"+interaction.options.getChannel('channel').id+"> ist schon aufgenommen");
+      interaction.reply("<#"+interaction.options.getChannel('channel').id+"> nicht gefunden");
       return;
      }
 
