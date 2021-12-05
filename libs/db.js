@@ -120,18 +120,23 @@ module.exports = {
   const channels = t.getJ(`./DB/${server.id}/channel.json`, options);
   if (options === true)
    console.log(`db> get Channel @${server.id}`);
-  return channels;
+  return channels.rp;
  },
  newChannel: function (server, channel, options) {
-  let channels = this.getChannels(server, options);
-  channels.rp.push(channel.id);
+  let rp = this.getChannels(server, options);
+  rp.push(channel.id);
+  const channels = {
+   rp: rp
+  };
   t.setJ(`./DB/${server.id}/channel.json`, channels, options);
   if (options === true)
    console.log(`db> add Channel ${channel.name}(${channel.id})@${server.id}`);
  },
  delChannel: function (server, channel, options) {
-  let channels = this.getChannels(server, options);
-  channels = t.popA(channels, channel.id);
+  const rp = this.getChannels(server, options);
+  const channels = {
+   rp: t.popA(rp, channel.id)
+  };
   t.setJ(`./DB/${server.id}/channel.json`, channels, options);
   if (options === true)
    console.log(`db> del Channel ${channel.name}(${channel.id})@${server.id}`);

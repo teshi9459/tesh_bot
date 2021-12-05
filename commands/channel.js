@@ -19,11 +19,12 @@ module.exports = {
   .setRequired(true)),
  async execute(client, interaction) {
   const server = db.getServer(interaction.guildId);
-  const channels = db.getChannels(server);
+  const rp = db.getChannels(server);
+  console.log(rp);
   switch (interaction.options.getString('action')) {
    case  'n':
-    for (let i = 0; i < channels.length; i++) {
-     if (channels[i] == interaction.options.getChannel('channel')) {
+    for (let i = 0; i < rp.length; i++) {
+     if (rp[i] == interaction.options.getChannel('channel')) {
       interaction.reply("<#"+interaction.options.getChannel('channel').id+"> ist schon aufgenommen");
       return;
      }
@@ -32,18 +33,14 @@ module.exports = {
     interaction.reply('<#' + interaction.options.getChannel('channel').id + '> wurde hinzugefügt');
     break;
    case  'd':
-    for (let i = 0; i < channels.length; i++) {
-     if (channels[i] == interaction.options.getChannel('channel')) {
-      const one = true;
-     }
-     if (!one) {
-      interaction.reply("<#"+interaction.options.getChannel('channel').id+"> nicht gefunden");
+    let one = false;
+    for (let i = 0; i < rp.length; i++) {
+     if (rp[i] == interaction.options.getChannel('channel')) {
+      db.delChannel(server, interaction.options.getChannel('channel'));
+      interaction.reply('<#' + interaction.options.getChannel('channel') + '> wurde gelöscht');
       return;
-     }
-
-    }
-    db.delChannel(server, interaction.options.getChannel('channel'));
-    interaction.reply('<#' + interaction.options.getChannel('channel') + '> wurde gelöscht');
+     }}
+    interaction.reply("<#"+interaction.options.getChannel('channel')+"> nicht gefunden");
     break;
   }
  }
