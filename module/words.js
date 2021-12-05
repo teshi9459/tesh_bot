@@ -23,8 +23,8 @@ module.exports = {
   if (msg.content.includes('(') || msg.content.includes(')') ||
    msg.content.includes('[') || msg.content.includes(']') ||
    msg.content.includes('{') || msg.content.includes('}')) return;
-  for (let i = 0; i < channel.rp.length; i++) {
-   if (msg.channel.parentId == channel.rp[i]) {
+  for (let i = 0; i < channel.length; i++) {
+   if (msg.channel.parentId == channel[i]) {
     const message = msg.content.split(' ');
     if (message.length > module.min && message.length < module.max) {
      msg.reply(module.txt).then(msg => {
