@@ -20,7 +20,6 @@ module.exports = {
  async execute(client, interaction) {
   const server = db.getServer(interaction.guildId);
   const rp = db.getChannels(server);
-  console.log(rp);
   switch (interaction.options.getString('action')) {
    case  'n':
     for (let i = 0; i < rp.length; i++) {
