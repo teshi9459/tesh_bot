@@ -8,6 +8,6 @@ module.exports = {
  .setName('github')
  .setDescription('GitHub link for the Bot responsitores'),
  async execute(client, interaction) {
-  await interaction.reply(`>>> https://github.com/djario/tesh_bot`);
+  await interaction.reply(`>>> https://github.com/teshi9459/tesh_bot`);
  },
 };
