@@ -7,21 +7,25 @@ module.exports = {
  data: new SlashCommandBuilder()
  .setName('channel')
  .setDescription('add channel to RP-Channel list')
- .addStringOption(option =>
-  option.setName('action')
-  .setDescription('what to do')
-  .setRequired(true)
-  .addChoice('new', 'n')
-  .addChoice('del', 'd'))
- .addChannelOption(option =>
-  option.setName('channel')
-  .setDescription('channel to use')
-  .setRequired(true)),
+ .addSubcommand(subcommand =>
+  subcommand
+  .setName('add')
+  .setDescription('add channel to list')
+  .addChannelOption(option => option.setName('channel').setDescription('the CATEGORY to add').setRequired(true)))
+ .addSubcommand(subcommand =>
+  subcommand
+  .setName('del')
+  .setDescription('delete Channel from list')
+  .addChannelOption(option => option.setName('channel').setDescription('the CATEGORY to delete').setRequired(true)))
+ .addSubcommand(subcommand =>
+  subcommand
+  .setName('list')
+  .setDescription('send a message with all channels')),
  async execute(client, interaction) {
   const server = db.getServer(interaction.guildId);
   const rp = db.getChannels(server);
-  switch (interaction.options.getString('action')) {
-   case  'n':
+  switch (interaction.options.getSubcommand()) {
+   case 'add':
     for (let i = 0; i < rp.length; i++) {
      if (rp[i] == interaction.options.getChannel('channel')) {
       interaction.reply("<#"+interaction.options.getChannel('channel').id+"> ist schon aufgenommen");
@@ -31,8 +35,7 @@ module.exports = {
     db.newChannel(server, interaction.options.getChannel('channel'));
     interaction.reply('<#' + interaction.options.getChannel('channel').id + '> wurde hinzugefügt');
     break;
-   case  'd':
-    let one = false;
+   case 'del':
     for (let i = 0; i < rp.length; i++) {
      if (rp[i] == interaction.options.getChannel('channel')) {
       db.delChannel(server, interaction.options.getChannel('channel'));
@@ -40,6 +43,14 @@ module.exports = {
       return;
      }}
     interaction.reply("<#"+interaction.options.getChannel('channel')+"> nicht gefunden");
+    break;
+   case 'list':
+    let list = `>>> __Roleplay Kategorien__`;
+    for (let i = 0; i < rp.length; i++) {
+     list += `\n${i+1}. <#${rp[i]}>`;
+    }
+    list += `\n<------------------>`;
+    interaction.reply(list);
     break;
   }
  }
