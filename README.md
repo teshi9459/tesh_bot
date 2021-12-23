@@ -6,6 +6,5 @@
 ---|---|---
 ![Discord](https://img.shields.io/discord/879756056346099722?label=%20) | ![Discord](https://img.shields.io/discord/895413069642072075?label=%20) | ![Discord](https://img.shields.io/discord/842687670803103774?label=%20)
 
-aktuelle Version: ![GitHub release (latest by date)](https://img.shields.io/github/v/release/teshi9459/tesh_bot?label=%20&style=plastic)
-
+aktuelle Version: ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/teshi9459/tesh_bot?include_prereleases&label=%20)
 ## Funktionen
