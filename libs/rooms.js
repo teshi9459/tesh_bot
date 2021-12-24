@@ -11,6 +11,28 @@ module.exports = {
   setup: false,
   ongoing: true
  },
+ clear: function (interaction) {
+  let Group = tools.getJ(`./DB/${interaction.guildId}/rooms/${interaction.options.getInteger('group')}.json`);
+  let room;
+  for (let i = 0; i < Group.rooms.length; i++) {
+   if (Group.rooms[i].index == interaction.options.getInteger('room')) {
+    room = i;
+    break;
+   }
+  }
+
+  const num = interaction.options.getInteger('bed')-1;
+
+  Group.rooms[room].beds[num] = this.newBed();
+
+  tools.setJ(`./DB/${interaction.guildId}/rooms/${interaction.options.getInteger('group')}.json`, Group);
+  const channel = interaction.guild.channels.cache.find(c => c.id == Group.channel);
+  channel.messages.fetch(Group.message).then(msg => msg.edit({
+   embeds: [this.getEmbed(Group, interaction)]})).catch(e => console.error(e));
+  interaction.reply({
+   content: 'du wurdest ausgetragen', ephemeral: true
+  });
+ },
  claim: function (interaction) {
   let Group = tools.getJ(`./DB/${interaction.guildId}/rooms/${interaction.options.getInteger('group')}.json`);
   let room;

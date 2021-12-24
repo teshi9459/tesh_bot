@@ -49,7 +49,7 @@ module.exports = {
     rooms.claim(interaction);
     break;
    case 'clear':
-
+rooms.clear(interaction);
     break;
    case 'delete':
     rooms.delete(interaction, interaction.options.getInteger('group'));
