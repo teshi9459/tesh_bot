@@ -55,6 +55,8 @@ module.exports = {
    interaction.reply('bite starte zuerst setup');
    return;
   }
+  
+  if (!interaction.member.roles.cache.has(server.adminrole)) return;
   try {
    module = db.getModuleS(server, 'words');
   } catch (e) {

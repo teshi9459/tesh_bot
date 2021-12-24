@@ -14,7 +14,7 @@ module.exports = {
   .setDescription('generate a new Group of rooms')
   .addStringOption(option => option.setName('name').setDescription('name of the group').setRequired(true))
   .addIntegerOption(option => option.setName('rooms').setDescription('How many rooms should be in this group 1-25').setRequired(true))
-  .addIntegerOption(option => option.setName('beds').setDescription('how many beds should be in a room').setRequired(true))
+  .addIntegerOption(option => option.setName('beds').setDescription('how many beds should be in a room ≤10').setRequired(true))
   .addIntegerOption(option => option.setName('start').setDescription('at which number should the rooms start? 1≤').setRequired(true)))
  .addSubcommand(subcommand =>
   subcommand
@@ -40,18 +40,44 @@ module.exports = {
   switch (interaction.options.getSubcommand()) {
    case 'new':
     if (interaction.options.getInteger('rooms') > 25 || interaction.options.getInteger('beds') > 10 || interaction.options.getInteger('start') < 1) {
-     interaction.reply('pls read the hints');
+     interaction.reply({
+      content: 'pls read the hints', ephemeral: true
+     });
+     return;
+    }
+    if (interaction.options.getInteger('rooms') < 1 || interaction.options.getInteger('beds') < 1) {
+     interaction.reply({
+      content: 'pls read the hints', ephemeral: true
+     });
      return;
     }
     rooms.newPannel(interaction);
     break;
    case 'claim':
+    if (interaction.options.getInteger('room') < 1 || interaction.options.getInteger('group') < 1 || interaction.options.getString('character') === null) {
+     interaction.reply({
+      content: 'please use real values', ephemeral: true
+     });
+     return;
+    }
     rooms.claim(interaction);
     break;
    case 'clear':
-rooms.clear(interaction);
+    if (interaction.options.getInteger('room') < 1 || interaction.options.getInteger('group') < 1 || interaction.options.getInteger('bed') < 1) {
+     interaction.reply({
+      content: 'please use real values', ephemeral: true
+     });
+     return;
+    }
+    rooms.clear(interaction);
     break;
    case 'delete':
+    if (interaction.options.getInteger('group') < 1) {
+     interaction.reply({
+      content: 'please use real value', ephemeral: true
+     });
+     return;
+    }
     rooms.delete(interaction, interaction.options.getInteger('group'));
     break;
   }

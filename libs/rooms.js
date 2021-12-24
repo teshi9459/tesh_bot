@@ -23,6 +23,15 @@ module.exports = {
 
   const num = interaction.options.getInteger('bed')-1;
 
+  const server = db.getServer(interaction.guildId);
+
+  if (!interaction.member.roles.cache.has(server.adminrole) && Group.rooms[room].beds[num].user != interaction.member.id) {
+   interaction.reply({
+    content: 'du kannst das nicht machen :c', ephemeral: true
+   });
+   return;
+  }
+
   Group.rooms[room].beds[num] = this.newBed();
 
   tools.setJ(`./DB/${interaction.guildId}/rooms/${interaction.options.getInteger('group')}.json`, Group);
@@ -30,7 +39,7 @@ module.exports = {
   channel.messages.fetch(Group.message).then(msg => msg.edit({
    embeds: [this.getEmbed(Group, interaction)]})).catch(e => console.error(e));
   interaction.reply({
-   content: 'du wurdest ausgetragen', ephemeral: true
+   content: 'char wurde ausgetragen', ephemeral: true
   });
  },
  claim: function (interaction) {
@@ -45,17 +54,28 @@ module.exports = {
 
   let beds = Group.rooms[room].beds;
   let num;
-  for (let i = 0; i < beds.length; i++) {
+  for (let i = 0; i <= beds.length; i++) {
    num = i;
-   if (beds[i].user == undefined)
-    break;
-   if (i > Group.rooms[room].max) {
+   if (i >= Group.rooms[room].max) {
     interaction.reply({
      content: 'kein Platz frei :c', ephemeral: true
     });
     return;
+   } else {
+    if (beds[i].user == undefined)
+     break;
    }
   }
+  const server = db.getServer(interaction.guildId);
+
+  if (interaction.options.getUser('user') !== null) {
+   if (interaction.options.getUser('user').id != interaction.member.id && !interaction.member.roles.cache.has(server.adminrole)) {
+    interaction.reply({
+     content: 'du kannst das nicht machen :c', ephemeral: true
+    });
+    return;
+   }}
+
   let bed = this.newBed();
   if (interaction.options.getUser('user') === null)
    bed.user = interaction.member.id;
@@ -70,10 +90,18 @@ module.exports = {
   channel.messages.fetch(Group.message).then(msg => msg.edit({
    embeds: [this.getEmbed(Group, interaction)]}));
   interaction.reply({
-   content: 'du wurdest eingetragen', ephemeral: true
+   content: 'char wurde eingetragen', ephemeral: true
   });
  },
  newPannel: function (interaction) {
+  const server = db.getServer(interaction.guildId);
+
+  if (!interaction.member.roles.cache.has(server.adminrole)) {
+   interaction.reply({
+    content: 'du kannst das nicht machen :c', ephemeral: true
+   });
+   return;
+  }
   let old = this.newGroup(interaction);
   interaction.channel.send('bitte warten').then(msg => {
    let Group = tools.getJ(`./DB/${interaction.guildId}/rooms/${old.index}.json`);
@@ -82,15 +110,14 @@ module.exports = {
    msg.edit({
     content: ' ',
     embeds: [this.getEmbed(Group, interaction)]});
-   interaction.reply({
-    content: 'now run `rooms claim` to get an room ', ephemeral: true
-   })}).catch(e => console.error(e));
+   interaction.reply('>>> Trage dich einfach ein indem du `/rooms claim` benutzt. Oder trage dich aus mit `/rooms clear`.');
+  }).catch(e => console.error(e));
 
  },
  getEmbed: function(Group, interaction) {
   let Embed = new MessageEmbed()
   .setColor('#b8f1ff')
-  .setTitle(Group.name + `[${Group.index}]`)
+  .setTitle(Group.name + ` [${Group.index}]`)
   .setFooter(`${interaction.guild.name} | ${interaction.client.user.username}-Bot`, interaction.guild.iconURL());
   for (var i = 0; i < Group.rooms.length; i++) {
    Embed.addField(`‹– Zimmer [${Group.rooms[i].index}] –›`, this.getRoom(Group.rooms[i].beds));
@@ -159,6 +186,15 @@ module.exports = {
   return out;
  },
  delete: function (interaction, index) {
+  const server = db.getServer(interaction.guildId);
+
+  if (!interaction.member.roles.cache.has(server.adminrole)) {
+   interaction.reply({
+    content: 'du kannst das nicht machen :c', ephemeral: true
+   });
+   return;
+  }
+
   const Group = tools.getJ(`./DB/${interaction.guildId}/rooms/${index}.json`);
   tools.delPath(`./DB/${interaction.guildId}/rooms/${index}.json`);
   const channel = interaction.guild.channels.cache.find(c => c.id == Group.channel);
