@@ -38,7 +38,7 @@ module.exports = {
      VIEW_CHANNEL: true
     });
    });
-   interaction.guild.channels.create("ideen und bugs", {
+   interaction.guild.channels.create("ideen bugs infos", {
     type: "GUILD_TEXT"
    }).then(channel => {
     channel.setParent(category);
