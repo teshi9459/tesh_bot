@@ -159,9 +159,12 @@ module.exports = {
   return out;
  },
  delete: function (interaction, index) {
+  const Group = tools.getJ(`./DB/${interaction.guildId}/rooms/${index}.json`);
   tools.delPath(`./DB/${interaction.guildId}/rooms/${index}.json`);
+  const channel = interaction.guild.channels.cache.find(c => c.id == Group.channel);
+  channel.messages.fetch(Group.message).then(msg => msg.delete());
   interaction.reply({
-   content: 'deleted Group '+ index, ephemeral: true
+   content: 'Gruppe ' + index +' wurde gelöscht', ephemeral: true
   });
  }
 };
