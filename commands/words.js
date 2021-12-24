@@ -2,6 +2,8 @@ const {
  SlashCommandBuilder
 } = require('@discordjs/builders');
 const db = require('../libs/db');
+const dc = require('../libs/dc');
+const shorts = require('../libs/shorts');
 module.exports = {
  data: new SlashCommandBuilder()
  .setName('words')
@@ -30,38 +32,79 @@ module.exports = {
  .addSubcommand(subcommand =>
   subcommand
   .setName('status')
-  .setDescription('return the Module')),
+  .setDescription('return the Module'))
+ .addSubcommand(subcommand =>
+  subcommand
+  .setName('setup')
+  .setDescription('setup the words module'))
+ .addSubcommand(subcommand =>
+  subcommand
+  .setName('on')
+  .setDescription('turns on the words module'))
+ .addSubcommand(subcommand =>
+  subcommand
+  .setName('off')
+  .setDescription('turns off the words module')),
  async execute(client, interaction) {
-  const server = db.getServer(interaction.guildId);
-  let module = db.getModuleS(server, 'words');
+  let server;
+  let module;
+  try {
+   server = db.getServer(interaction.guildId);
+  } catch (e) {
+   console.error(e);
+   interaction.reply('bite starte zuerst setup');
+   return;
+  }
+  
+  if (!interaction.member.roles.cache.has(server.adminrole)) return;
+  try {
+   module = db.getModuleS(server, 'words');
+  } catch (e) {
+   if (interaction.options.getSubcommand() != 'setup') {
+    interaction.reply('bitte führe zuerst words setup aus!');
+    return;
+   }
+  }
+
   let answer = `>>> ${interaction.options.getSubcommand()} is now \``;
   switch (interaction.options.getSubcommand()) {
    case 'max':
     module.max = interaction.options.getInteger('amount');
-    answer += module.max;
+    answer += module.max+ '`';
     break;
    case 'min':
     module.min = interaction.options.getInteger('amount');
-    answer += module.min;
+    answer += module.min+ '`';
     break;
    case 'text':
     module.txt = interaction.options.getString('text');
-    answer += module.txt;
+    answer += module.txt+ '`';
     break;
    case 'deletetime':
     module.delTime = interaction.options.getInteger('time')*1000;
-    answer += module.delTime;
+    answer += module.delTime+ '`';
     break;
    case 'reportlevel':
     module.max = interaction.options.getInteger('level');
-    answer += module.reportLevel;
+    answer += module.reportLevel+ '`';
     break;
    case 'status':
-    answer = "__Module__:\n\`"+JSON.stringify(module);
+    answer = "__Module__:\n\`\`\`"+JSON.stringify(module)+ '```';
     break;
+   case 'setup':
+    shorts.wordsSetup(interaction);
+    return;
+
+    case 'on':
+     module.enabled = true;
+     answer = 'Modul words ist nun `on`';
+     break;
+    case 'off':
+     module.enabled = false;
+     answer = 'Modul words ist nun `off`';
+     break;
   }
   db.updateModuleS(server, module);
-  answer += '`';
   interaction.reply(answer);
  },
 };
