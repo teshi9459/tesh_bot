@@ -1,11 +1,19 @@
 const {
  SlashCommandBuilder
 } = require('@discordjs/builders');
+const db = require ('../libs/db');
 module.exports = {
  data: new SlashCommandBuilder()
  .setName('brackets')
  .setDescription('searches the last 100 messages for brackets'),
  async execute(client, interaction) {
+  const server = db.getServer(interaction.guildId);
+
+  if (!interaction.member.roles.cache.has(server.adminrole)) {
+   interaction.reply({
+    content: `nur <@${server.adminrole}> können das machen`, ephemeral: true
+   });
+  }
   interaction.channel.messages.fetch()
   .then(messages => {
    const filters = ['(', ')', '{', '}', '[', ']'];
