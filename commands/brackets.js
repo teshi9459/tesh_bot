@@ -5,7 +5,7 @@ const db = require ('../libs/db');
 module.exports = {
  data: new SlashCommandBuilder()
  .setName('brackets')
- .setDescription('searches the last 100 messages for brackets'),
+ .setDescription('sucht nach Klammernachrichten und löscht sie'),
  async execute(client, interaction) {
   const server = db.getServer(interaction.guildId);
 
@@ -15,24 +15,38 @@ module.exports = {
    });
    return;
   }
-  interaction.channel.messages.fetch()
-  .then(messages => {
-   const filters = ['(', ')', '{', '}', '[', ']'];
-   let count = 0;
-   let skip = 0;
-   for (let i = 0; i < filters.length; i++) {
+
+  const filters = ['(',
+   ')',
+   '{',
+   '}',
+   '[',
+   ']'];
+  let count = 0;
+  let skip = 0;
+  let all = 0;
+  let message;
+  await interaction.reply('suche nach Nachrichten, bitte warten');
+
+  for (let i = 0; i < filters.length; i++) {
+   await interaction.channel.messages.fetch()
+   .then(messages => {
+    all += messages.filter(msg => msg.content.includes(filters[i])).size;
     for (let j = 0; j < messages.filter(msg => msg.content.includes(filters[i])).size; j++) {
      try {
-      /* code */
       messages.filter(msg => msg.content.includes(filters[i])).at(j).delete();
       count++;
      } catch (e) {
+      console.error(e)
       skip++;
      }
+     console.log(i+'.'+j+'='+count+'/'+skip+'/'+all+'\n'+message)
     }
-   }
-   interaction.reply(`deleted ${count} Messages with \`${filters}\` skipped ${skip}`);
-  })
-  .catch(console.error);
+   })
+   .catch(console.error);
+  }
+
+  await interaction.editReply(`habe ${count} Nachricht von gesammt ${all}, welche \`${filters}\` enthalten. Übersprungen: ${skip}`);
+
  }
 };
