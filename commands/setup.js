@@ -53,7 +53,6 @@ module.exports = {
 
   server = db.updateServer(server);
   db.setChannels(server);
-  console.log(db.getServer(server.id));
   interaction.reply('fertig mit setup :relieved:');
  },
 };

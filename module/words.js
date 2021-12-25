@@ -1,5 +1,5 @@
 const db = require('../libs/db');
-const dc = require('../libs/dcTools.js');
+const dc = require('../libs/dc');
 module.exports = {
  data: {
   id: 'words',

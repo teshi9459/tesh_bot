@@ -1,6 +1,6 @@
 const db = require('../libs/db');
 const tools = require('../libs/tools');
-const dc = require('../libs/dcTools.js');
+const dc = require('../libs/dc');
 const {
  MessageEmbed
 } = require('discord.js');
