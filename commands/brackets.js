@@ -11,20 +11,27 @@ module.exports = {
 
   if (!interaction.member.roles.cache.has(server.adminrole)) {
    interaction.reply({
-    content: `nur <@${server.adminrole}> können das machen`, ephemeral: true
+    content: `nur <@&${server.adminrole}> können das machen`, ephemeral: true
    });
+   return;
   }
   interaction.channel.messages.fetch()
   .then(messages => {
    const filters = ['(', ')', '{', '}', '[', ']'];
    let count = 0;
+   let skip = 0;
    for (let i = 0; i < filters.length; i++) {
     for (let j = 0; j < messages.filter(msg => msg.content.includes(filters[i])).size; j++) {
-     messages.filter(msg => msg.content.includes(filters[i])).at(j).delete();
-     count++;
+     try {
+      /* code */
+      messages.filter(msg => msg.content.includes(filters[i])).at(j).delete();
+      count++;
+     } catch (e) {
+      skip++;
+     }
     }
    }
-   interaction.reply(`deleted ${count} Messages with \`${filters}\``);
+   interaction.reply(`deleted ${count} Messages with \`${filters}\` skipped ${skip}`);
   })
   .catch(console.error);
  }
