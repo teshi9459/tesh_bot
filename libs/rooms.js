@@ -12,6 +12,15 @@ module.exports = {
   ongoing: true
  },
  clear: function (interaction) {
+  const server = db.getServer(interaction.guildId);
+
+  if (!interaction.member.roles.cache.has(server.adminrole)) {
+   interaction.reply({
+    content: `nur <@${server.adminrole}> können das machen, melde dein char erst ab!`, ephemeral: true
+   });
+   return;
+  }
+
   let Group = tools.getJ(`./DB/${interaction.guildId}/rooms/${interaction.options.getInteger('group')}.json`);
   let room;
   for (let i = 0; i < Group.rooms.length; i++) {
@@ -22,15 +31,6 @@ module.exports = {
   }
 
   const num = interaction.options.getInteger('bed')-1;
-
-  const server = db.getServer(interaction.guildId);
-
-  if (!interaction.member.roles.cache.has(server.adminrole) && Group.rooms[room].beds[num].user != interaction.member.id) {
-   interaction.reply({
-    content: 'du kannst das nicht machen :c', ephemeral: true
-   });
-   return;
-  }
 
   Group.rooms[room].beds[num] = this.newBed();
 
@@ -85,7 +85,7 @@ module.exports = {
   bed.character = interaction.options.getString('character');
 
   Group.rooms[room].beds[num] = bed;
-  tools.setJ(`./DB/${interaction.guildId}/rooms/${interaction.options.getInteger('group')}.json`, Group, true);
+  tools.setJ(`./DB/${interaction.guildId}/rooms/${interaction.options.getInteger('group')}.json`, Group);
   const channel = interaction.guild.channels.cache.find(c => c.id == Group.channel);
   channel.messages.fetch(Group.message).then(msg => msg.edit({
    embeds: [this.getEmbed(Group, interaction)]}));
