@@ -16,7 +16,7 @@ module.exports = {
 
   if (!interaction.member.roles.cache.has(server.adminrole)) {
    interaction.reply({
-    content: `nur <@${server.adminrole}> können das machen, melde dein char erst ab!`, ephemeral: true
+    content: `nur <@&${server.adminrole}> können das machen, melde dein char erst ab!`, ephemeral: true
    });
    return;
   }
@@ -110,7 +110,7 @@ module.exports = {
    msg.edit({
     content: ' ',
     embeds: [this.getEmbed(Group, interaction)]});
-   interaction.reply('>>> Trage dich einfach ein indem du `/rooms claim` benutzt. Oder trage dich aus mit `/rooms clear`.');
+   interaction.reply('>>> Trage dich einfach ein indem du `/rooms claim` benutzt. Oder lass dich austragen von einem Admin (nur wenn der Char auszieht oder in Sonderfällen)');
   }).catch(e => console.error(e));
 
  },
