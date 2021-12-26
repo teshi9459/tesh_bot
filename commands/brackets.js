@@ -54,7 +54,7 @@ module.exports = {
   }
   count -= skip;
 
-  await interaction.editReply(`\` ${count} \` Nachricht von gesammt \` ${all} \` gelöscht, welche ${filters} enthielten. Übersprungen: \` ${skip} \``);
+  await interaction.editReply(`\` ${count} \` Nachrichten von gesamt \` ${all} \` gelöscht, welche ${filters} enthielten. Übersprungen: \` ${skip}\``);
 
  }
 };
