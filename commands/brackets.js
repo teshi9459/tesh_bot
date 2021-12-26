@@ -15,7 +15,7 @@ module.exports = {
    });
    return;
   }
-
+  let delets = [];
   const filters = ['(',
    ')',
    '{',
@@ -25,28 +25,36 @@ module.exports = {
   let count = 0;
   let skip = 0;
   let all = 0;
+  let del = 0;
   let message;
   await interaction.reply('suche nach Nachrichten, bitte warten');
 
-  for (let i = 0; i < filters.length; i++) {
-   await interaction.channel.messages.fetch()
-   .then(messages => {
-    all += messages.filter(msg => msg.content.includes(filters[i])).size;
+  await interaction.channel.messages.fetch().then(messages => {
+   for (let i = 0; i < filters.length; i++) {
     for (let j = 0; j < messages.filter(msg => msg.content.includes(filters[i])).size; j++) {
-     try {
-      messages.filter(msg => msg.content.includes(filters[i])).at(j).delete();
-      count++;
-     } catch (e) {
-      console.error(e)
-      skip++;
-     }
-     console.log(i+'.'+j+'='+count+'/'+skip+'/'+all+'\n'+message)
-    }
-   })
-   .catch(console.error);
+     delets.push(messages.filter(msg => msg.content.includes(filters[i])).at(j).id);
+     delets = delets.filter(function(ele, pos) {
+      return delets.indexOf(ele) == pos;
+     });
+     interaction.editReply(`\` ${delets.length} \` Nachrichten gefunden!`);
+    }}
+  });
+  await interaction.editReply(`\` ${delets.length} \` Nachrichten gefunden!`);
+  all = delets.length;
+  for (let i = 0; i < delets.length; i++) {
+   interaction.channel.messages.fetch(delets[i]).then(message => {
+    message.delete();
+    del++;
+   }).catch(e => {
+    console.log(e);
+    skip++;
+   });
+   await   interaction.editReply(`\` ${del} \` von \` ${all} \` Nachrichten gelöscht!`);
+   count++;
   }
+  count -= skip;
 
-  await interaction.editReply(`habe ${count} Nachricht von gesammt ${all}, welche \`${filters}\` enthalten. Übersprungen: ${skip}`);
+  await interaction.editReply(`\` ${count} \` Nachricht von gesammt \` ${all} \` gelöscht, welche ${filters} enthielten. Übersprungen: \` ${skip} \``);
 
  }
 };
