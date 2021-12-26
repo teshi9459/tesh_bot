@@ -31,8 +31,15 @@ module.exports = {
 
   await interaction.channel.messages.fetch().then(messages => {
    for (let i = 0; i < filters.length; i++) {
-    for (let j = 0; j < messages.filter(msg => msg.content.includes(filters[i])).size; j++) {
-     delets.push(messages.filter(msg => msg.content.includes(filters[i])).at(j).id);
+    for (let j = 0; j < messages.filter(msg => msg.content.startsWith(filters[i])).size; j++) {
+     delets.push(messages.filter(msg => msg.content.startsWith(filters[i])).at(j).id);
+     delets = delets.filter(function(ele, pos) {
+      return delets.indexOf(ele) == pos;
+     });
+     interaction.editReply(`\` ${delets.length} \` Nachrichten gefunden!`);
+    }
+    for (let j = 0; j < messages.filter(msg => msg.content.endsWith(filters[i])).size; j++) {
+     delets.push(messages.filter(msg => msg.content.endsWith(filters[i])).at(j).id);
      delets = delets.filter(function(ele, pos) {
       return delets.indexOf(ele) == pos;
      });
