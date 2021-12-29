@@ -1,33 +1,46 @@
 module.exports = {
-  name: 'interactionCreate',
-  async execute(client, interaction) {
-    if (interaction.isButton()) return;
-    const fs = require('fs');
-    const {
-      Collection
-    } = require('discord.js');
-    client.commands = new Collection();
-    const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+ name: 'interactionCreate',
+ async execute(client, interaction) {
+  if (interaction.isButton()) return;
+  const fs = require('fs');
+  const {
+   Collection
+  } = require('discord.js');
+  client.commands = new Collection();
+  const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
-    for (const file of commandFiles) {
-      const command = require(`../commands/${file}`);
-      client.commands.set(command.data.name, command);
-    }
-    console.log(`${interaction.user.tag} in #${interaction.channel.name} triggered an interaction (${interaction.commandName}).`);
+  for (const file of commandFiles) {
+   const command = require(`../commands/${file}`);
+   client.commands.set(command.data.name, command);
+  }
+  const date = new Date().toISOString();
+  console.log(`\n${date}>> ${interaction.user.tag} triggered an interaction (${interaction.commandName}).`);
+  let content;
+  try {
+   content = `\n${date}>>${interaction.commandName}.${interaction.options.getSubcommand()}@${interaction.user.tag}#${interaction.channel.name}`;
+  } catch (e) {
+   content = `\n${date}>>${interaction.commandName}@${interaction.user.tag}#${interaction.channel.name}`;
+  }
 
-    if (!interaction.isCommand()) return;
+  fs.writeFile(`./DB/${
+   interaction.guildId
+   }/interactions.log`, content, {
+    flag: 'a+'
+   }, err => {});
 
-    const command = client.commands.get(interaction.commandName);
+  if (!interaction.isCommand()) return;
 
-    if (!command) return;
-    try {
-      await command.execute(client,interaction);
-    } catch (error) {
-      console.error(error);
-      await interaction.reply({
-        content: 'There was an error while executing this command!', ephemeral: true
-      });
-    }
+  const command = client.commands.get(interaction.commandName);
 
-  },
+  if (!command) return;
+  try {
+   await command.execute(client, interaction);
+  } catch (error) {
+   console.error(error);
+   await interaction.reply({
+    content: 'There was an error while executing this command!', ephemeral: true
+   });
+  }
+
+ },
 };
