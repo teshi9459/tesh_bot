@@ -181,7 +181,7 @@ module.exports = {
    if (beds[i].user == undefined)
     out += `— \n`;
    else
-    out += `— <@${beds[i].user}> · <#${beds[i].channel}> · ${beds[i].character}\n`;
+    out += `— <@!${beds[i].user}> · <#${beds[i].channel}> · ${beds[i].character}\n`;
   }
   return out;
  },
