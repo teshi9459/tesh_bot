@@ -38,7 +38,7 @@ module.exports = {
   } catch (error) {
    console.error(error);
    await interaction.reply({
-    content: 'There was an error while executing this command!', ephemeral: true
+    content: 'Ein Fehler ist aufgetreten qwq\n*kontaktiere den Developer*', ephemeral: true
    });
   }
 

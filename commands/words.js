@@ -7,44 +7,44 @@ const shorts = require('../libs/shorts');
 module.exports = {
  data: new SlashCommandBuilder()
  .setName('words')
- .setDescription('Settings for the words module')
+ .setDescription('Einstellungen für words')
  .addSubcommand(subcommand =>
   subcommand
   .setName('max')
-  .setDescription('set the number of words that trigger a warning')
-  .addIntegerOption(option => option.setName('amount').setDescription('Amount of max').setRequired(true)))
+  .setDescription('Anzahl an Wörten die mindestens erreicht werden müssen')
+  .addIntegerOption(option => option.setName('amount').setDescription('Zahl min 1').setRequired(true)))
  .addSubcommand(subcommand =>
   subcommand
   .setName('min')
-  .setDescription('sets the number of words that are ignored').addIntegerOption(option => option.setName('amount').setDescription('Amount of min (≥0)').setRequired(true)))
+  .setDescription('Anzahl an Wörtern ab denen das Modul startet').addIntegerOption(option => option.setName('amount').setDescription('Zahl min 0').setRequired(true)))
  .addSubcommand(subcommand =>
   subcommand
   .setName('text')
-  .setDescription('sets the warning text').addStringOption(option => option.setName('text').setDescription('text that the bot say, if tge Module is trigered').setRequired(true)))
+  .setDescription('setzt den Text welcher in der Warnung steht').addStringOption(option => option.setName('text').setDescription('text DC Syntax wie Sternchen können benutzt werden').setRequired(true)))
  .addSubcommand(subcommand =>
   subcommand
   .setName('deletetime')
-  .setDescription('sets the time after which the warning is deleted').addIntegerOption(option => option.setName('time').setDescription('time in s').setRequired(true)))
+  .setDescription('Zeit nach der die Warnung gelöscht wird').addIntegerOption(option => option.setName('time').setDescription('Zeit in Sekunden').setRequired(true)))
  .addSubcommand(subcommand =>
   subcommand
   .setName('reportlevel')
-  .setDescription('sets the level of the report').addIntegerOption(option => option.setName('level').setDescription('level for the report (0-5)').setRequired(true)))
+  .setDescription('setzt die Schwere des Verstoßes').addIntegerOption(option => option.setName('level').setDescription('höhe des Levels').setRequired(true)))
  .addSubcommand(subcommand =>
   subcommand
   .setName('status')
-  .setDescription('return the Module'))
+  .setDescription('gibt die Moduldaten zurück'))
  .addSubcommand(subcommand =>
   subcommand
   .setName('setup')
-  .setDescription('setup the words module'))
+  .setDescription('erstellt das words Modul'))
  .addSubcommand(subcommand =>
   subcommand
   .setName('on')
-  .setDescription('turns on the words module'))
+  .setDescription('schaltet das Modul ein'))
  .addSubcommand(subcommand =>
   subcommand
   .setName('off')
-  .setDescription('turns off the words module')),
+  .setDescription('schaltet das Modul aus')),
  async execute(client, interaction) {
   let server;
   let module;
@@ -52,7 +52,7 @@ module.exports = {
    server = db.getServer(interaction.guildId);
   } catch (e) {
    console.error(e);
-   interaction.reply('bite starte zuerst setup');
+   interaction.reply('bitte starte zuerst `/words setup`');
    return;
   }
   
@@ -61,12 +61,12 @@ module.exports = {
    module = db.getModuleS(server, 'words');
   } catch (e) {
    if (interaction.options.getSubcommand() != 'setup') {
-    interaction.reply('bitte führe zuerst words setup aus!');
+    interaction.reply('bitte starte zuerst `/words setup`');
     return;
    }
   }
 
-  let answer = `>>> ${interaction.options.getSubcommand()} is now \``;
+  let answer = `>>> ${interaction.options.getSubcommand()} ist jetzt \``;
   switch (interaction.options.getSubcommand()) {
    case 'max':
     module.max = interaction.options.getInteger('amount');
@@ -97,11 +97,11 @@ module.exports = {
 
     case 'on':
      module.enabled = true;
-     answer = 'Modul words ist nun `on`';
+     answer = 'Modul words ist nun `AN`';
      break;
     case 'off':
      module.enabled = false;
-     answer = 'Modul words ist nun `off`';
+     answer = 'Modul words ist nun `AUS`';
      break;
   }
   db.updateModuleS(server, module);

@@ -7,7 +7,7 @@ module.exports = {
   console.log(`online as ${client.user.tag}\non ${guilds}`);
   client.user.setPresence({
    activities: [{
-    name: 'mit den Rpern 👀'
+    name: 'mit RPern'
    }], status: 'online'
   });
   if (!fs.existsSync(`./DB/`)) {

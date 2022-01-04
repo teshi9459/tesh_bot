@@ -5,10 +5,10 @@ const db = require('../libs/db');
 module.exports = {
  data: new SlashCommandBuilder()
  .setName('del')
- .setDescription('delete X messages')
+ .setDescription('löscht X Nachrichten')
  .addIntegerOption(option =>
   option.setName('x')
-  .setDescription('indicates how many messages will be deleted ')
+  .setDescription('wie viel Nachrichten sollen gelöscht werden')
   .setRequired(true)),
  async execute(client, interaction) {
   const server = db.getServer(interaction.guildId);
@@ -16,7 +16,7 @@ module.exports = {
   const amount = interaction.options.getInteger('x');
 
   if (amount <= 1 || amount > 100) {
-   interaction.reply('pls chose Number from 1 to 100');
+   interaction.reply('bitte wähle eine Zahl von 1 - 100');
    setTimeout(function() {
     interaction.deleteReply();
    }, 3000);
@@ -25,15 +25,15 @@ module.exports = {
 
   interaction.channel.bulkDelete(amount, true).catch(err => {
    console.error(err);
-   interaction.reply('Cannot delete ${amount} messages');
+   interaction.reply(`konnte ${amount} Nachrichten nicht löschen`);
    setTimeout(function() {
     interaction.deleteReply();
-   }, 3000);
+   }, 5*1000);
    return;
   });
-  interaction.reply('done');
+  interaction.reply('fertig');
   setTimeout(function() {
    interaction.deleteReply();
-  }, 3000);
+  }, 5*1000);
  },
 };
