@@ -7,47 +7,47 @@ const rooms = require('../libs/rooms');
 module.exports = {
  data: new SlashCommandBuilder()
  .setName('rooms')
- .setDescription('Settings for the rooms module')
+ .setDescription('Einstellungen für rooms')
  .addSubcommand(subcommand =>
   subcommand
   .setName('new')
-  .setDescription('generate a new Group of rooms')
-  .addStringOption(option => option.setName('name').setDescription('name of the group').setRequired(true))
-  .addIntegerOption(option => option.setName('rooms').setDescription('How many rooms should be in this group 1-25').setRequired(true))
-  .addIntegerOption(option => option.setName('beds').setDescription('how many beds should be in a room ≤10').setRequired(true))
-  .addIntegerOption(option => option.setName('start').setDescription('at which number should the rooms start? 1≤').setRequired(true)))
+  .setDescription('erstellt eine neue Gruppe an Räumen')
+  .addStringOption(option => option.setName('name').setDescription('Name der Gruppe').setRequired(true))
+  .addIntegerOption(option => option.setName('rooms').setDescription('Wie viele Räume in der Gruppe sein sollen 1-25').setRequired(true))
+  .addIntegerOption(option => option.setName('beds').setDescription('Wie viele Betten in einem Raum sein sollen 1-10').setRequired(true))
+  .addIntegerOption(option => option.setName('start').setDescription('bei welcher Nummer die Räume anfangen sollen min 1').setRequired(true)))
  .addSubcommand(subcommand =>
   subcommand
   .setName('claim')
-  .setDescription('if you want to claim a room')
-  .addIntegerOption(option => option.setName('group').setDescription('the group (stands at the top)').setRequired(true))
-  .addIntegerOption(option => option.setName('room').setDescription('the room, witch you want').setRequired(true))
-  .addChannelOption(option => option.setName('characterchannel').setDescription('choose the channel your characters are in').setRequired(true))
-  .addStringOption(option => option.setName('character').setDescription('name of your character').setRequired(true))
-  .addUserOption(option => option.setName('user').setDescription('only if an admin registers someone')))
+  .setDescription('claimt ein Bett in einem Raum')
+  .addIntegerOption(option => option.setName('group').setDescription('die Gruppe steht in [] ganz am Anfang').setRequired(true))
+  .addIntegerOption(option => option.setName('room').setDescription('die Nummer des Raums in den du willst steht in [] daneben').setRequired(true))
+  .addChannelOption(option => option.setName('characterchannel').setDescription('wähle deinen Character-Channel').setRequired(true))
+  .addStringOption(option => option.setName('character').setDescription('Name des Characters').setRequired(true))
+  .addUserOption(option => option.setName('user').setDescription('nur für Admin wenn sie jemanden zuteilen')))
  .addSubcommand(subcommand =>
   subcommand
   .setName('delete')
-  .setDescription('delete a group of rooms')
-  .addIntegerOption(option => option.setName('group').setDescription('Group to delete').setRequired(true)))
+  .setDescription('Löscht eine Gruppe von Räumen')
+  .addIntegerOption(option => option.setName('group').setDescription('Gruppe die zu löschen ist [?]').setRequired(true)))
  .addSubcommand(subcommand =>
   subcommand
   .setName('clear')
-  .setDescription('clear a bed').addIntegerOption(option => option.setName('group').setDescription('Group to use').setRequired(true))
-  .addIntegerOption(option => option.setName('room').setDescription('Room to use').setRequired(true))
-  .addIntegerOption(option => option.setName('bed').setDescription('bed to use').setRequired(true))),
+  .setDescription('löscht einen Character aus einem Bett').addIntegerOption(option => option.setName('group').setDescription('die Gruppe steht in [] ganz Oben').setRequired(true))
+  .addIntegerOption(option => option.setName('room').setDescription('der Raum steht in [] daneben').setRequired(true))
+  .addIntegerOption(option => option.setName('bed').setDescription('die Nummer des Bettes von oben nach unten').setRequired(true))),
  async execute(client, interaction) {
   switch (interaction.options.getSubcommand()) {
    case 'new':
     if (interaction.options.getInteger('rooms') > 25 || interaction.options.getInteger('beds') > 10 || interaction.options.getInteger('start') < 1) {
      interaction.reply({
-      content: 'pls read the hints', ephemeral: true
+      content: 'bitte lese die Tipps', ephemeral: true
      });
      return;
     }
     if (interaction.options.getInteger('rooms') < 1 || interaction.options.getInteger('beds') < 1) {
      interaction.reply({
-      content: 'pls read the hints', ephemeral: true
+      content: 'bitte lese die Tipps', ephemeral: true
      });
      return;
     }
@@ -56,7 +56,7 @@ module.exports = {
    case 'claim':
     if (interaction.options.getInteger('room') < 1 || interaction.options.getInteger('group') < 1 || interaction.options.getString('character') === null) {
      interaction.reply({
-      content: 'please use real values', ephemeral: true
+      content: 'bitte lese die Tipps', ephemeral: true
      });
      return;
     }
@@ -65,7 +65,7 @@ module.exports = {
    case 'clear':
     if (interaction.options.getInteger('room') < 1 || interaction.options.getInteger('group') < 1 || interaction.options.getInteger('bed') < 1) {
      interaction.reply({
-      content: 'please use real values', ephemeral: true
+      content: 'bitte lese die Tipps', ephemeral: true
      });
      return;
     }
@@ -74,7 +74,7 @@ module.exports = {
    case 'delete':
     if (interaction.options.getInteger('group') < 1) {
      interaction.reply({
-      content: 'please use real value', ephemeral: true
+      content: 'bitte lese die Tipps', ephemeral: true
      });
      return;
     }

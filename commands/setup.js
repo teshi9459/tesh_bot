@@ -5,10 +5,10 @@ const db = require('../libs/db');
 module.exports = {
  data: new SlashCommandBuilder()
  .setName('setup')
- .setDescription('setup the bot for the server')
+ .setDescription('setup den Bot für den Server')
  .addRoleOption(option =>
   option.setName('admin')
-  .setDescription('role for administration on the server (can edit bot settings)')
+  .setDescription('Admin Rolle (kann Bot Einstellungen vornehmen)')
   .setRequired(true)),
  async execute(client, interaction) {
   try {

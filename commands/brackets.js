@@ -4,7 +4,7 @@ const {
 const db = require ('../libs/db');
 module.exports = {
  data: new SlashCommandBuilder()
- .setName('brackets')
+ .setName('klammern')
  .setDescription('sucht nach Klammernachrichten und löscht sie'),
  async execute(client, interaction) {
   const server = db.getServer(interaction.guildId);

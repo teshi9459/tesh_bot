@@ -27,7 +27,7 @@ module.exports = {
      command.start(message);
     } catch (error) {
      console.error(error);
-     message.reply('There was an error while executing this command!');
+     message.reply('Ein Fehler ist aufgetreten qwq\n*kontaktiere den Developer*');
     }
    }
   }
