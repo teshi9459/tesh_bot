@@ -130,8 +130,8 @@ module.exports = {
    fs.mkdirSync(`./DB/${interaction.guildId}/rooms/`);
   }
   let num = 1;
-  const commandFiles = fs.readdirSync(`./DB/${interaction.guildId}/rooms/`).filter(file => file.endsWith('.json'));
-  for (const file of commandFiles) {
+  const gFiles = fs.readdirSync(`./DB/${interaction.guildId}/rooms/`).filter(file => file.endsWith('.json'));
+  for (const file of gFiles) {
    num++;
   }
 
