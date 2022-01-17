@@ -51,7 +51,7 @@ module.exports = {
   module.max = 10;
   module.min = 2;
   module.reportLevel = 2;
-  module.delTime = 60000;
+  module.delTime = 5*60*1000;
   module.txt = '>>> Verwarnung Words';
   const category = dc.getChannel(interaction,
    server.category);
@@ -60,7 +60,7 @@ module.exports = {
     type: "GUILD_TEXT"
    }).then(channel => {
     channel.setParent(category);
-    channel.permissionOverwrites.edit(interaction.guild.id, {
+    channel.permissionOverwrites.edit(interaction.guildId, {
      VIEW_CHANNEL: false
     });
     channel.permissionOverwrites.edit(server.adminrole, {

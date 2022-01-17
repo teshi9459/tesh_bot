@@ -94,7 +94,7 @@ module.exports = {
      type: "GUILD_TEXT"
     }).then(channel => {
      channel.setParent(server.category);
-     channel.permissionOverwrites.edit(interaction.guild.id, {
+     channel.permissionOverwrites.edit(interaction.guildId, {
       VIEW_CHANNEL: false
      });
      channel.permissionOverwrites.edit(server.adminrole, {

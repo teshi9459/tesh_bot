@@ -11,22 +11,24 @@ module.exports = {
    if (ticket.channel == message.channel.id) {
     try {
      tk.save(message);
-     return;
     } catch (error) {
      console.error(error);
      message.reply('Ein Fehler ist aufgetreten qwq\n*kontaktiere den Developer*');
     }
+    return;
    }
   }
-
-
   if (message.author.bot) return;
-  const commandFiles = fs.readdirSync('./message').filter(file => file.endsWith('.js'));
+  const commandFiles = fs.readdirSync('./message/').filter(file => file.endsWith('.js'));
   for (const file of commandFiles) {
-   const mod = require(`../message/${file}`);
-   if (fs.existsSync(`./DB/${message.guildId}/modules/${mod.data.id}.json`)) {
+   const modul = require(`../message/${file}`);
+   if (fs.existsSync(`./DB/${message.guildId}/modules/${modul.data.id}.json`)) {
+    const config = db.getModuleS({
+     id: message.guildId
+    }, modul.data.id);
+    if (!config.enabled) return;
     try {
-     mod.start(message);
+     modul.start(message);
     } catch (error) {
      console.error(error);
      message.reply('Ein Fehler ist aufgetreten qwq\n*kontaktiere den Developer*');
