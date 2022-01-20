@@ -26,9 +26,9 @@ module.exports = {
    if (msg.channel.parentId == channel[i]) {
     const message = msg.content.split(' ');
     if (message.length > module.min && message.length < module.max) {
-     msg.reply(module.txt).then(msg => {
-      dc.delMsg(msg, module.delTime);
-     });
+     // msg.reply(module.txt).then(msg => {
+     // dc.delMsg(msg, module.delTime);
+     // });
      db.newReport(server, user, {
       id: 'words',
       level: module.reportLevel,
