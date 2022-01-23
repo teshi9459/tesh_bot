@@ -6,9 +6,15 @@ module.exports = {
   setup: true
  },
  start: function (msg) {
+  let user;
   try {
    const server = db.getServer(msg.guildId);
-   let user = db.getUser(server, msg.author.id);
+    try {
+  user = db.getUser(server, msg.author.id);
+  } catch (e) {
+   db.setUser(server,msg.author);
+  user = db.getUser(server, msg.author.id);
+  }
    let reports = db.getReports(server, user);
    const channel = db.getChannels(server);
    let module = db.getModuleS(server, 'words');

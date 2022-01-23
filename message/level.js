@@ -27,7 +27,13 @@ module.exports = {
   }
  },
  main: function (msg, server, module) {
-  let user = db.getUser(server, msg.author.id);
+  let user;
+  try {
+   user = db.getUser(server, msg.author.id);
+  } catch (e) {
+   db.setUser(server,msg.author);
+  user = db.getUser(server, msg.author.id);
+  }
   if (user.levelPing === undefined) user.levelPing = true;
   if (user.xp === undefined) user.xp = 0;
   const count = msg.content.split(' ').length;
