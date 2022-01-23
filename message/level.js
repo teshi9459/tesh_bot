@@ -31,24 +31,24 @@ module.exports = {
   if (user.levelPing === undefined) user.levelPing = true;
   if (user.xp === undefined) user.xp = 0;
   const count = msg.content.split(' ').length;
-  const oldLevel = Math.floor(Math.sqrt(user.xp));
+  const oldLevel = Math.floor(Math.sqrt(user.xp/2));
   if (count < module.min) user.xp++;
   else if (count >= module.min) user.xp += Math.round(count/module.unit);
-  const newLevel = Math.floor(Math.sqrt(user.xp));
+  const newLevel = Math.floor(Math.sqrt(user.xp/2));
   if (newLevel > oldLevel) this.levelUp(msg, server, module, user, newLevel);
   else db.updateUser(server, user);
  },
  levelUp: function (msg, server, module, user, newLevel) {
-  const nextXp = Math.pow(newLevel+1, 2);
+  const nextXp = Math.pow(newLevel+1, 2)*2;
   let ping = ['an',
-   'on'];
+   'true'];
   if (user.levelPing)  ping = ['aus',
-   'off'];
+   'false'];
   const userDc = dc.getMember(msg, user.id);
   let Embed = new MessageEmbed()
   .setTitle(`🎉__Congratulations ${msg.author.username}__🎉`)
   .setColor('#aaeeff')
-  .setDescription(`Du hast **Level ${newLevel}** erreicht!\nFür Level ${newLevel+1} brauchst du **noch ${nextXp-user.xp} XP**\n*schalte den Ping mit \`level ping ${ping[1]}\` ${ping[0]}*`)
+  .setDescription(`Du hast **Level ${newLevel}** erreicht!\nFür Level ${newLevel+1} brauchst du **noch ${Math.round(nextXp-user.xp)} XP**\n*schalte den Ping mit \`level ping ${ping[1]}\` ${ping[0]}*`)
   .setFooter(`Level ${newLevel} - XP ${user.xp} | Tesh-Level-System`, msg.guild.iconURL());
   for (let i = 0; i < module.level.length; i++) {
    if (module.level[i].index == newLevel) {
@@ -56,7 +56,7 @@ module.exports = {
     .setColor('#a3ff8a')
     .setDescription(module.level[i].text);
     msg.member.roles.add(module.level[i].role);
-   //remove old
+    //remove old
     break;
    }
   }

@@ -15,6 +15,6 @@
   "@discordjs/rest": "^0.1.0-canary.0",
   "discord-api-types": "^0.24.0",
   "discord.js": "^13.2.0",
-  "simple-git": "^2.48.0"
+  "jimp": "^0.16.1"
  }
 }
