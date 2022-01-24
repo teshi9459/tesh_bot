@@ -50,7 +50,6 @@ module.exports = {
    'true'];
   if (user.levelPing)  ping = ['aus',
    'false'];
-  const userDc = dc.getMember(msg, user.id);
   let Embed = new MessageEmbed()
   .setTitle(`🎉__Congratulations ${msg.author.username}__🎉`)
   .setColor('#aaeeff')
@@ -78,6 +77,35 @@ module.exports = {
     embeds: [Embed]
    });
   }
+ },
+ getCard: function (interaction) {
+  let user;
+   let userId = interaction.member.id;
+   if(interaction.options.getUser('user')!=null) userId =interaction.options.getUser('user');
+   const server = db.getServer(interaction.guildId);
+   try {
+    user = db.getUser(server, userId);
+   } catch (e) {
+    interaction.reply({content:'User nicht gefunden :(', ephemeral: true});
+    return;
+   }
+   if (user.xp === undefined) user.xp = 0;
+   const level = Math.floor(Math.sqrt(user.xp/2));
+   //copie
+   const nextXp = Math.pow(level+1, 2)*2;
+  let ping = ['an',
+   'true'];
+  if (user.levelPing)  ping = ['aus',
+   'false'];
+  let Embed = new MessageEmbed()
+  .setTitle(`💳 __Level Card ${interaction.user.username}__ 💳`)
+  .setColor('#aaeeff')
+  .setDescription(`Du bist bei **Level ${level}**!\nFür Level ${level+1} brauchst du **noch ${Math.round(nextXp-user.xp)} XP**\n*schalte den Ping mit \`level ping ${ping[1]}\` ${ping[0]}*`)
+  .setFooter(`Level ${level} - XP ${user.xp} | Tesh-Level-System`, interaction.guild.iconURL());
+  const channel = interaction.channel;
+  interaction.reply({
+    embeds: [Embed]
+   });
  },
  setup: function (interaction, server) {
   let module = {

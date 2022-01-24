@@ -9,6 +9,14 @@ module.exports = {
  .setDescription('Einstellungen für Level')
  .addSubcommand(subcommand =>
   subcommand
+  .setName('card')
+  .setDescription('zeigt aktuelles Level und XP')
+  .addUserOption(option =>
+   option
+   .setName('user')
+   .setDescription('zeigt das level von jemand anderem')))
+ .addSubcommand(subcommand =>
+  subcommand
   .setName('setup')
   .setDescription('erstellt das Level System'))
  .addSubcommand(subcommand =>
@@ -112,6 +120,9 @@ module.exports = {
     interaction.reply({
      content: 'der Ping ist nun ` ' + ping + ' `', ephemeral: true
     });
+    break;
+   case 'card':
+    lv.getCard(interaction);
     break;
   }
  },
