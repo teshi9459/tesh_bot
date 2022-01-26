@@ -86,7 +86,7 @@ module.exports = {
    try {
     user = db.getUser(server, userId);
    } catch (e) {
-    interaction.reply({content:'User nicht gefunden :(', ephemeral: true});
+    interaction.reply({content:'funktioniert zur Zeit net *Teshi*', ephemeral: true});
     return;
    }
    if (user.xp === undefined) user.xp = 0;
