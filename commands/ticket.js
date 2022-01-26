@@ -26,7 +26,14 @@ module.exports = {
   .addSubcommand(subcommand =>
   subcommand
   .setName('rename')
-  .setDescription('benennt den channel um')),
+  .setDescription('benennt den channel um')
+  .addStringOption(option => option
+  .setName('status')
+  .setDescription('status des tickets')
+  .setRequired(true)
+  .addChoice('wird bearbeitet', 'wb')
+  .addChoice('inaktiv', 'ia')
+  .addChoice('problematisch', 'pm'))),
  async execute(client, interaction) {
   const server = db.getServer(interaction.guildId);
   if (!interaction.member.roles.cache.has(server.adminrole)) {
@@ -48,6 +55,7 @@ module.exports = {
     case 'rename':
      const ticket = t.getJ(`./DB/${interaction.guildId}/tickets/${interaction.channel.id}.json`);
      let typ = '';
+     let icon = '';
      switch (ticket.typ) {
       case 'char':
        typ = 'steckbrief';
@@ -57,13 +65,28 @@ module.exports = {
        break;
         case 'team':
        typ = 'bewernung';
+       icon = '📠';
        break;
       default:
        typ = undefined;
      }
-     const user = interaction.guild.member.fetch(ticket.user);
-     let name = ':hourglass_flowing_sand: '+ typ +' '+user.username;
+     switch (interaction.options.getString('status')) {
+      case 'wb':
+       icon = '⏳';
+       break;
+       case 'pm':
+       icon = '⚠️';
+       break;
+        case 'ia':
+       icon = '⁉️';
+       break;
+      default:
+       icon = undefined;
+     }
+     const user = interaction.guild.members.cache.find(u => u.id == ticket.user).user;
+     let name = icon + ' '+ typ +' '+user.username;
      interaction.channel.edit({ name: name });
+     interaction.reply({content: 'done', ephemeral: true});
     break;
   }
  },
