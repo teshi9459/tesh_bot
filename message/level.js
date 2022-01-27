@@ -80,11 +80,12 @@ module.exports = {
  },
  getCard: function (interaction) {
   let user;
-   let userId = interaction.member.id;
-   if(interaction.options.getUser('user')!=null) userId =interaction.options.getUser('user').id;
+   let userI = interaction.member;
+   if(interaction.options.getUser('user')!=null) 
+   userI =interaction.options.getUser('user');
    const server = db.getServer(interaction.guildId);
    try {
-    user = db.getUser(server, userId);
+    user = db.getUser(server, userI.user);
    } catch (e) {
     interaction.reply({content:'funktioniert zur Zeit net *Teshi*', ephemeral: true});
     return;
@@ -98,9 +99,9 @@ module.exports = {
   if (user.levelPing)  ping = ['aus',
    'false'];
   let Embed = new MessageEmbed()
-  .setTitle(`💳 __Level Card ${interaction.user.username}__ 💳`)
+  .setTitle(`💳 __Level Card ${userI.user.username}__ 💳`)
   .setColor('#aaeeff')
-  .setDescription(`Du bist bei **Level ${level}**!\nFür Level ${level+1} brauchst du **noch ${Math.round(nextXp-user.xp)} XP**\n*schalte den Ping mit \`level ping ${ping[1]}\` ${ping[0]}*`)
+  .setDescription(`Ist bei **Level ${level}**!\nFür Level ${level+1} braucht man **noch ${Math.round(nextXp-user.xp)} XP**\n*schalte den Ping mit \`level ping ${ping[1]}\` ${ping[0]}*`)
   .setFooter(`Level ${level} - XP ${user.xp} | Tesh-Level-System`, interaction.guild.iconURL());
   const channel = interaction.channel;
   interaction.reply({
