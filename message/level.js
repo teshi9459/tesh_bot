@@ -81,7 +81,7 @@ module.exports = {
  getCard: function (interaction) {
   let user;
    let userId = interaction.member.id;
-   if(interaction.options.getUser('user')!=null) userId =interaction.options.getUser('user');
+   if(interaction.options.getUser('user')!=null) userId =interaction.options.getUser('user').id;
    const server = db.getServer(interaction.guildId);
    try {
     user = db.getUser(server, userId);
