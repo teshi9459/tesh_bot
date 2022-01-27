@@ -99,7 +99,7 @@ module.exports = {
   if (user.levelPing)  ping = ['aus',
    'false'];
   let Embed = new MessageEmbed()
-  .setTitle(`💳 __Level Card ${userI.username}__ 💳`)
+  .setTitle(`💳 __Level Card ${userI.nickname}__ 💳`)
   .setColor('#aaeeff')
   .setDescription(`Ist bei **Level ${level}**!\nFür Level ${level+1} braucht man **noch ${Math.round(nextXp-user.xp)} XP**\n*schalte den Ping mit \`level ping ${ping[1]}\` ${ping[0]}*`)
   .setFooter(`Level ${level} - XP ${user.xp} | Tesh-Level-System`, interaction.guild.iconURL());
