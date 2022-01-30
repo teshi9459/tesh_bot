@@ -38,22 +38,22 @@ module.exports = {
    db.setUser(server, msg.author);
    user = db.getUser(server, msg.author.id);
   }
-  function saveMsg (stats, msg, server, module) {
-   for (let i = 0; i < stats.channel.length; i++) {
-    if (msg.channel.id == stats.channel[i][0]) {
-     stats.channel[i] == this.newMsg(stats.channel[i], msg);
-     t.setJ(`./DB/${server.id}/stats.json`, stats);
-     this.updateInfo(msg, server, module);
-     return;
-    }
-   }}
-  saveMsg(stats, msg, server, module);
+  this.saveMsg(stats, msg, server, module);
   const now = new Date(msg.createdTimestamp
   );
   // year,month,day,hour,msg
   stats.channel.push([msg.channel.id, []]);
-  saveMsg(stats, msg, server, module);
+  this.saveMsg(stats, msg, server, module);
  },
+ saveMsg: function (stats, msg, server, module) {
+  for (let i = 0; i < stats.channel.length; i++) {
+   if (msg.channel.id == stats.channel[i][0]) {
+    stats.channel[i] == this.newMsg(stats.channel[i], msg);
+    t.setJ(`./DB/${server.id}/stats.json`, stats);
+    this.updateInfo(msg, server, module);
+    return;
+   }
+  }},
  updateInfo: function (msg, server, module) {
   let stats = t.getJ(`./DB/${server.id}/stats.json`);
   const stY = this.getInfos(stats, 'year');
@@ -62,7 +62,7 @@ module.exports = {
   let stMonth = 'In diesem Monat wurden **' + stM[0] + ' Nachrichten** Rped. Es waren **' + stM[1] + ' RPer** daran beteiligt. Eine durechschnittliche Nachrichten hatte **'+ stM[2] + ' Wörter** und war **'+ stM[3] + ' Zeichen** lang.';
   const stD = this.getInfos(stats, 'day');
   let stDay = 'An diesem Tag wurden **' + stD[0] + ' Nachrichten** Rped. Es waren **' + stD[1] + ' RPer** daran beteiligt. Eine durechschnittliche Nachrichten hatte **'+ stD[2] + ' Wörter** und war **'+ stD[3] + ' Zeichen** lang.';
-
+  let text = 'text';
   const Embed = new MessageEmbed()
   .setColor('#aaeeff')
   .setTitle(`__${msg.guild.name} Roleplay Infos__`)
@@ -82,8 +82,9 @@ module.exports = {
   .setThumbnail(msg.guild.iconURL())
   .setTimestamp()
   .setFooter(`${msg.guild.name} - Tesh Analytics`, msg.guild.iconURL());
-  const channel = interaction.guild.channels.cache.find(c => c.id == module.channel);
-  channel.messages.fetch(module.message).then(msg => msg.edit({
+  console.log('modul channel');
+  const channel = msg.guild.channels.cache.find(c => c.id == module.channel);
+  channel.messages.fetch(module.message).then(nmsg => nmsg.edit({
    content: 'uwu',
    embeds: [Embed]})).catch(e => console.error(e));
  },
@@ -158,7 +159,7 @@ module.exports = {
     0,
     0,
     0];
-   let user;
+   let user = [];
    for (var i = 0; i < messages.length; i++) {
     out[0]++;
     let us = true;
@@ -169,7 +170,7 @@ module.exports = {
      }
     }
     if (us) {
-     us.push(messages[i].user);
+     user.push(messages[i].user);
      out[1]++;
     }
     out[2] += messages[i].length.words;
