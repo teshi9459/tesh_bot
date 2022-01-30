@@ -25,9 +25,7 @@ module.exports = {
   }
  },
  main: function (msg, server, module, user, reports, channel) {
-  if (msg.content.includes('(') || msg.content.includes(')') ||
-   msg.content.includes('[') || msg.content.includes(']') ||
-   msg.content.includes('{') || msg.content.includes('}')) return;
+  if (msg.content.includes('(') || msg.content.includes(')')) return;
   for (let i = 0; i < channel.length; i++) {
    if (msg.channel.parentId == channel[i]) {
     const message = msg.content.split(' ');

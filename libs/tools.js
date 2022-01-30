@@ -81,5 +81,36 @@ module.exports = {
    }
   }
   return arr;
+ },
+ getTime: function (time) {
+ const date = new Date(time);
+ const year = date.getFullYear(),
+ month = date.getMonth(),
+ day = date.getDate(),
+ weekday = date.getDay(),
+ hours = date.getHours(),
+ minutes = date.getMinutes(),
+ seconds = date.getSeconds();
+ return [['year',
+  year],
+  ['month',
+   month],
+  ['day',
+   day],
+  ['weekday',
+   weekday],
+  ['hours',
+   hours],
+  ['minutes',
+   minutes],
+  ['seconds',
+   seconds]];
+},
+getTimeV: function (value, time) {
+ time = this.getTime(time);
+ for (let i = 0; i < time.length; i++) {
+  if (time[i][0] === value) return time[i][1];
  }
+ return undefined;
+}
 };
