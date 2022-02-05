@@ -123,9 +123,7 @@ module.exports = {
   .setColor('#a42626')
   .setTitle('rejected - abgelehnt')
   .setDescription('Der Charcter wurde von <@!'+ interaction.user.id +'> rejected.\nGrund:\n'+interaction.options.getString('grund')+'\nWenn du auf `close` drückst wird das Ticket geschlossen')
-  .setFooter(`$ {
-   interaction.user.tag
-   } hat den Charakter abgelehnt`, interaction.guild.iconURL());
+  .setFooter(`${interaction.user.tag} hat den Charakter abgelehnt`, interaction.guild.iconURL());
 
   const row = new MessageActionRow()
   .addComponents(
