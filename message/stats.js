@@ -11,7 +11,6 @@ module.exports = {
  start: function (msg) {
   if (msg.author.bot) return;
   if (msg.content.includes(')') || msg.content.includes('(')) retrun;
-  console.log('lol')
   try {
    const server = db.getServer(msg.guildId);
    const channel = db.getChannels(server);

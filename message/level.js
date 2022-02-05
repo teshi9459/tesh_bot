@@ -69,7 +69,7 @@ module.exports = {
   }
   db.updateUser(server, user);
 
-  await this.getImage('./DB/'+msg.guild.id+'/user/'+author.id+'/level.jpg', msg.author.displayAvatarURL({
+  await this.getImage('./DB/'+msg.guild.id+'/user/'+msg.author.id+'/level.jpg', msg.author.displayAvatarURL({
    format: 'jpg'
   }), msg.author.tag, newLevel, user.xp, nextXp);
   const channel = dc.getChannel(msg, module.log);
@@ -77,12 +77,12 @@ module.exports = {
    channel.send({
     content: `<@!${user.id}>`,
     embeds: [Embed],
-    files: ['./DB/'+msg.guild.id+'/user/'+author.id+'/level.jpg']
+    files: ['./DB/'+msg.guild.id+'/user/'+msg.author.id+'/level.jpg']
    });
   } else {
    channel.send({
     embeds: [Embed],
-    files: ['./DB/'+msg.guild.id+'/user/'+author.id+'/level.jpg']
+    files: ['./DB/'+msg.guild.id+'/user/'+msg.author.id+'/level.jpg']
    });
   }
  },
