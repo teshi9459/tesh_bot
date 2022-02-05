@@ -89,21 +89,33 @@ module.exports = {
    let Embed = new MessageEmbed()
    .setColor('#abeeff')
    .setTitle('Accepted 2/2')
-   .setDescription(`Der Charcter wurde nun auch von <@!${interaction.user.id}> accepted. Glückwunsch!\n\n__Fertig?__ Dann kopiere die Daten aus dem großen Steckbrief in den unten und geb ihn mit \`/abgabe finish\` ab.\n**ACHTUNG\nder Bot reagiert auf die Überschriften, also bitte achte darauf, dass zBsp:** \`**Ganzer Name**: \` **genau SO geschrieben wird.**`)
-   .setFooter(`${interaction.user.tag} hat den Character accepted`, interaction.guild.iconURL());
-   tools.setJ(`./DB/${interaction.guildId}/tickets/${interaction.channel.id}.json`, char);
+   .setDescription(`Der Charcter wurde nun auch von <@!${interaction.user.id}> accepted. Glückwunsch!\n\n__Fertig?__ Schicke bitte deine Steckbrief noch mal \`so\` herein.\nDas machst du mit einem \` vor deinem Steckbrief und einem danach.`)
+   .setFooter(`$ {
+    interaction.user.tag
+    } hat den Character accepted`, interaction.guild.iconURL());
+   tools.setJ(`./DB/$ {
+    interaction.guildId
+    }/tickets/$ {
+    interaction.channel.id
+    }.json`, char);
    await interaction.reply({
     embeds: [Embed]});
-   await interaction.channel.send("`<=====| Der Kurze Steckbrief |=====>\n**-------- 𝘎𝘳𝘶𝘯𝘥𝘪𝘯𝘧𝘰𝘳𝘮𝘢𝘵𝘪𝘰𝘯𝘦𝘯 --------**\n**Ganzer Name:**\n**Alter:**\n**Aussehen:**\n**Außergewöhnliches Merkmal:** \n\n**Gilde:**\n**Rang:**\n**Klasse:** \n**-------- 𝘗𝘦𝘳𝘴ö𝘯𝘭𝘪𝘤𝘩𝘬𝘦𝘪𝘵 --------**\n**Charakter:**\n\n\n(Bitte alles nur stichpunktartig ausfüllen, dies dient nur als kurze info für Leute mit denen ihr rpet und dem Bot. \nEntfent bitte diese Info!\nMaximal 4k Zeichen.)`");
+  // await interaction.channel.send("`<=====| Der Kurze Steckbrief |=====>\n**-------- 𝘎𝘳𝘶𝘯𝘥𝘪𝘯𝘧𝘰𝘳𝘮𝘢𝘵𝘪𝘰𝘯𝘦𝘯 --------**\n**Ganzer Name: **\n**Alter: **\n**Aussehen: **\n**Außergewöhnliches Merkmal: ** \n\n**Gilde: **\n**Rang: **\n**Klasse: ** \n**-------- 𝘗𝘦𝘳𝘴ö𝘯𝘭𝘪𝘤𝘩𝘬𝘦𝘪𝘵 --------**\n**Charakter: **\n\n\n(Bitte alles nur stichpunktartig ausfüllen, dies dient nur als kurze info für Leute mit denen ihr rpet und dem Bot. \nEntfent bitte diese Info!\nMaximal 4k Zeichen.)`");
   }
  },
  reject: function (interaction) {
   const server = db.getServer(interaction.guildId);
   const modul = db.getModuleS(server, 'abgabe');
-  let char = tools.getJ(`./DB/${interaction.guildId}/tickets/${interaction.channel.id}.json`);
+  let char = tools.getJ(`./DB/$ {
+   interaction.guildId
+   }/tickets/$ {
+   interaction.channel.id
+   }.json`);
   if (!interaction.member.roles.cache.has(modul.team)) {
    interaction.reply({
-    content: `nur <@&${modul.team}> können das machen`, ephemeral: true
+    content: `nur < @&$ {
+    modul.team
+    } > können das machen`, ephemeral: true
    });
    return;
   }
@@ -111,12 +123,16 @@ module.exports = {
   .setColor('#a42626')
   .setTitle('rejected - abgelehnt')
   .setDescription('Der Charcter wurde von <@!'+ interaction.user.id +'> rejected.\nGrund:\n'+interaction.options.getString('grund')+'\nWenn du auf `close` drückst wird das Ticket geschlossen')
-  .setFooter(`${interaction.user.tag} hat den Charakter abgelehnt`, interaction.guild.iconURL());
+  .setFooter(`$ {
+   interaction.user.tag
+   } hat den Charakter abgelehnt`, interaction.guild.iconURL());
 
   const row = new MessageActionRow()
   .addComponents(
    new MessageButton()
-   .setCustomId(`ticket_close@${interaction.channel.id}`)
+   .setCustomId(`ticket_close@$ {
+    interaction.channel.id
+    }`)
    .setLabel('close')
    .setStyle('DANGER'));
   interaction.reply({
@@ -127,7 +143,11 @@ module.exports = {
   const server = db.getServer(interaction.guildId);
   const modul = db.getModuleS(server,
    'abgabe');
-  let char = tools.getJ(`./DB/${interaction.guildId}/tickets/${interaction.channel.id}.json`);
+  let char = tools.getJ(`./DB/$ {
+   interaction.guildId
+   }/tickets/$ {
+   interaction.channel.id
+   }.json`);
   if (char.accepts.length != 2) {
    interaction.reply({
     content: `du brauchst erst 2 accepts`, ephemeral: true
@@ -137,11 +157,15 @@ module.exports = {
   const row = new MessageActionRow()
   .addComponents(
    new MessageButton()
-   .setCustomId(`yes_finish_abgabe@${interaction.channel.id}`)
+   .setCustomId(`yes_finish_abgabe@$ {
+    interaction.channel.id
+    }`)
    .setLabel('Ja')
    .setStyle('SUCCESS'),
    new MessageButton()
-   .setCustomId(`no_finish_abgabe@${interaction.channel.id}`)
+   .setCustomId(`no_finish_abgabe@$ {
+    interaction.channel.id
+    }`)
    .setLabel('Nein')
    .setStyle('DANGER'));
   char.text = interaction.options.getString('steckbrief');
@@ -161,11 +185,17 @@ module.exports = {
     name: 'Gilde', value: sthp.getShorts('gilde', char.text)
    },
   )
-  .setFooter(`${interaction.user.tag}`, interaction.guild.iconURL());
+  .setFooter(`$ {
+   interaction.user.tag
+   }`, interaction.guild.iconURL());
   interaction.reply({
    content: '>>> Sind diese Angaben richtig? (du kannst sie nur mit einer erneuten Abgabe oder durch einen Admin ändern!)', embeds: [Embed],
    components: [row]});
-  const filter = i => i.customId === `yes_finish_abgabe@${interaction.channel.id}` && i.user.id == char.user || i.customId === `no_finish_abgabe@${interaction.channel.id}` && i.user.id == char.user;
+  const filter = i => i.customId === `yes_finish_abgabe@$ {
+  interaction.channel.id
+  }` && i.user.id == char.user || i.customId === `no_finish_abgabe@$ {
+  interaction.channel.id
+  }` && i.user.id == char.user;
 
   const collector = interaction.channel.createMessageComponentCollector({
    filter,
@@ -174,13 +204,21 @@ module.exports = {
 
   collector.on('collect',
    async i => {
-    if (i.customId === `no_finish_abgabe@${interaction.channel.id}`) {
+    if (i.customId === `no_finish_abgabe@$ {
+     interaction.channel.id
+     }`) {
      i.update({
       content: 'gebe den Command bitte erneut mit dem richtigen Steckbrief ein', embeds: [], components: []});
-    } else if (i.customId === `yes_finish_abgabe@${interaction.channel.id}`) {
+    } else if (i.customId === `yes_finish_abgabe@$ {
+     interaction.channel.id
+     }`) {
      let num = 1;
      try {
-      const chars = fs.readdirSync(`./DB/${server.id}/user/${ticket.user}/charcter/`).filter(file => file.endsWith('.json'));
+      const chars = fs.readdirSync(`./DB/$ {
+       server.id
+       }/user/$ {
+       ticket.user
+       }/charcter/`).filter(file => file.endsWith('.json'));
       for (const file of chars) {
        num++;
       }
@@ -204,7 +242,13 @@ module.exports = {
        accept: new Date().getTime()
       }
      };
-     tools.setJ(`./DB/${interaction.guildId}/user/${character.user}/character/${character.id}.json`, character);
+     tools.setJ(`./DB/$ {
+      interaction.guildId
+      }/user/$ {
+      character.user
+      }/character/$ {
+      character.id
+      }.json`, character);
      i.member.roles.add(modul.rper);
      i.update({
       content: `Der Character \`${character.name}\` wurde Gespeichert!\n**FERTIG** den Rest übernimmt das Team`, embeds: [], components: []});
