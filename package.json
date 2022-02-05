@@ -1,19 +1,24 @@
 {
- "name": "bot",
- "version": "1.0.0",
- "description": "",
+ "name": "teshbot",
+ "version": "2.2.0",
+ "description": "tesh bot halt",
  "main": "index.js",
  "scripts": {
   "test": "echo \"Test Start:\" && node index.js && exit 1",
   "coms": "node newcoms.js",
-  "comg": "node newcomg.js"
+  "comg": "node newcomg.js",
+  "monit": "pm2 start index.js && pm2 monit",
+  "log": "pm2 start index.js && pm2 logs --out",
+  "boot": "pm2 start index.js"
  },
  "author": "Teshi",
- "license": "ISC",
+ "license": "MIT",
  "dependencies": {
   "@discordjs/builders": "^0.7.0",
   "@discordjs/rest": "^0.1.0-canary.0",
   "discord-api-types": "^0.24.0",
-  "discord.js": "^13.2.0"
+  "discord.js": "^13.2.0",
+  "jimp": "^0.16.1",
+  "pm2": "^5.1.2"
  }
 }

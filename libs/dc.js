@@ -17,6 +17,10 @@ module.exports = {
  },
  getUser: function(message, id) {
   const obj = message.guild.members.cache.find(c => c.id == id);
+  return obj.user;
+ },
+ getMember: function(message, id) {
+  const obj = message.guild.members.cache.find(c => c.id == id);
   return obj;
  },
  getRole: function(message, id) {

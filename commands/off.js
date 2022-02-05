@@ -15,6 +15,8 @@ module.exports = {
 
   setTimeout(function () {
    client.destroy();
+   process.exit(1)
+
   }, 1000);
  },
 };

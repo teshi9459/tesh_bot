@@ -52,7 +52,7 @@ module.exports = {
    server = db.getServer(interaction.guildId);
   } catch (e) {
    console.error(e);
-   interaction.reply('bitte starte zuerst `/words setup`');
+   interaction.reply('bitte starte zuerst `/setup`');
    return;
   }
   

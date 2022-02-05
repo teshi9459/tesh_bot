@@ -38,11 +38,21 @@ module.exports = {
      VIEW_CHANNEL: true
     });
    });
-   interaction.guild.channels.create("ideen bugs infos", {
+   interaction.guild.channels.create("ideen bugs fqs", {
     type: "GUILD_TEXT"
    }).then(channel => {
     channel.setParent(category);
     channel.send(`>>> **Ideen** einfach unten reinschreiben\n\nbei **Bugs** Nachricht schreiben, Thread erstellen und einmal <@!652959577293324288> pingen.`);
+   });
+   interaction.guild.channels.create("tesh feed", {
+    type: "GUILD_NEWS",
+    topic: "Updates Feed für Tesh"
+   }).then(channel => {
+    channel.setParent(category);
+    channel.send(`__**TESH-FEED**__`);
+    let sv = db.getServer(channel.guildId);
+    sv.feed = channel.id;
+    db.updateServer(sv);
    });
    let sv = db.getServer(category.guildId);
    sv.category = category.id;
@@ -50,7 +60,6 @@ module.exports = {
   });
 
   server.setup = true;
-
   server = db.updateServer(server);
   db.setChannels(server);
   interaction.reply('fertig mit setup :relieved:');
