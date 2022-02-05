@@ -69,7 +69,7 @@ module.exports = {
   }
   db.updateUser(server, user);
 
-  await this.getImage(msg.author.displayAvatarURL({
+  await this.getImage('./DB/'+msg.guild.id+'/user/'+author.id+'/level.jpg', msg.author.displayAvatarURL({
    format: 'jpg'
   }), msg.author.tag, newLevel, user.xp, nextXp);
   const channel = dc.getChannel(msg, module.log);
@@ -77,12 +77,12 @@ module.exports = {
    channel.send({
     content: `<@!${user.id}>`,
     embeds: [Embed],
-    files: ['./media/images/'+msg.author.tag+'.jpg']
+    files: ['./DB/'+msg.guild.id+'/user/'+author.id+'/level.jpg']
    });
   } else {
    channel.send({
     embeds: [Embed],
-    files: ['./media/images/'+msg.author.tag+'.jpg']
+    files: ['./DB/'+msg.guild.id+'/user/'+author.id+'/level.jpg']
    });
   }
  },
@@ -106,13 +106,12 @@ module.exports = {
   //copie
   const nextXp = Math.pow(level+1, 2)*2;
   const channel = interaction.channel;
-
-  await this.getImage(userI.displayAvatarURL({
+  await this.getImage('./DB/'+interaction.guildId+'/user/'+userI.id+'/level.jpg', userI.displayAvatarURL({
    format: 'jpg'
   }), userI.tag, level, user.xp, nextXp);
   let done = false;
   await interaction.editReply({
-   files: ['./media/images/'+userI.tag+'.jpg']
+   files: ['./DB/'+interaction.guildId+'/user/'+userI.id+'/level.jpg']
   });
  },
  setup: function (interaction, server) {
@@ -139,12 +138,12 @@ module.exports = {
    content: 'fertig :)', ephemeral: true
   });
  },
- getImage: async function(fUserIcon, tUserTag, level, xp, nextXp) {
+ getImage: async function(path, fUserIcon, tUserTag, level, xp, nextXp) {
   const farbe = '#aaeeff';
   const maxLänge = 960;
   const xpLänge = maxLänge*(xp/nextXp);
   const bg = await Jimp.read('./media/images/bg.jpg');
-  await bg.write('./media/images/'+tUserTag+'.jpg');
+  await bg.write(path);
   const pb = await Jimp.read(fUserIcon);
   const line = new Jimp(xpLänge, 12, farbe, (err, image) => {});
   const pbb = new Jimp(210, 210, farbe, (err, image) => {});
@@ -166,6 +165,6 @@ module.exports = {
   } else {
    bg.print(ffont, 250, 80, tUserTag)}
   bg.print(levelfont, 24, 250, "Level: "+ level +"  -  XP: "+xp+"/"+nextXp, 950);
-  await bg.write('./media/images/'+tUserTag+'.jpg');
+  await bg.write(path);
  }
 };
