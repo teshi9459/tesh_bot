@@ -4,8 +4,8 @@ const tk = require('../libs/ticket');
 module.exports = {
  name: 'messageCreate',
  execute(client, message) {
-
-  const ticketFiles = fs.readdirSync(`./DB/${message.guildId}/tickets/`).filter(file => file.endsWith('.json'));
+try {
+ const ticketFiles = fs.readdirSync(`./DB/${message.guildId}/tickets/`).filter(file => file.endsWith('.json'));
   for (const file of ticketFiles) {
    const ticket = require(`../DB/${message.guildId}/tickets/${file}`);
    if (ticket.channel == message.channel.id) {
@@ -18,6 +18,8 @@ module.exports = {
     return;
    }
   }
+} catch (e) {}
+  
   if (message.author.bot) return;
   const commandFiles = fs.readdirSync('./message/').filter(file => file.endsWith('.js'));
   for (const file of commandFiles) {
