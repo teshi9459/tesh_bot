@@ -139,9 +139,11 @@ module.exports = {
   });
  },
  getImage: async function(path, fUserIcon, tUserTag, level, xp, nextXp) {
+  nextXp -= Math.pow(level, 2)*2;
+  xp -= Math.pow(level, 2)*2;
   const farbe = '#aaeeff';
   const maxLänge = 960;
-  const xpLänge = maxLänge*(xp/nextXp);
+   const xpLänge = maxLänge*(xp/nextXp);
   const bg = await Jimp.read('./media/images/bg.jpg');
   await bg.write(path);
   const pb = await Jimp.read(fUserIcon);
