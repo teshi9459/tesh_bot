@@ -139,11 +139,12 @@ module.exports = {
   });
  },
  getImage: async function(path, fUserIcon, tUserTag, level, xp, nextXp) {
+  const cXp = xp;
   nextXp -= Math.pow(level, 2)*2;
   xp -= Math.pow(level, 2)*2;
   const farbe = '#aaeeff';
   const maxLänge = 960;
-   const xpLänge = maxLänge*(xp/nextXp);
+  const xpLänge = maxLänge*(xp/nextXp);
   const bg = await Jimp.read('./media/images/bg.jpg');
   await bg.write(path);
   const pb = await Jimp.read(fUserIcon);
@@ -166,7 +167,7 @@ module.exports = {
    bg.print(ffont, 250, 105, tUserTag.substring(20))
   } else {
    bg.print(ffont, 250, 80, tUserTag)}
-  bg.print(levelfont, 24, 250, "Level: "+ level +"  -  XP: "+xp+"/"+nextXp, 950);
+  bg.print(levelfont, 24, 250, "Level: "+ level +"  - "+xp+"/"+nextXp+" xp  - Xp: "+cXp, 950);
   await bg.write(path);
  }
 };
