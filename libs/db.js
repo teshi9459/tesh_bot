@@ -5,7 +5,7 @@ module.exports = {
   const obj = {
    id: guild.id
   };
-  t.setJ(`./DB/${obj.id}/server.json`, obj, true);
+  t.setJ(`./DB/${obj.id}/server.json`, obj);
   if (options === true)
    console.log(`db> set guild ${guild.name} (${obj.id})`);
  },
