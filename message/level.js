@@ -55,7 +55,7 @@ module.exports = {
     let Embed = new MessageEmbed()
       .setTitle(`🎉__Congratulations ${msg.author.username}__🎉`)
       .setColor('#aaeeff')
-      .setDescription(`Du hast **Level ${newLevel}** erreicht!\nFür Level ${newLevel + 1} brauchst du **noch ${Math.round(nextXp - user.xp)} XP**\n*schalte den Ping mit \`level ping ${ping[1]}\` ${ping[0]}*`)
+      .setDescription(`Du hast **Level ${newLevel}** erreicht!\nFür Level ${newLevel + 1} brauchst du **noch ${Math.round(nextXp - user.xp)} XP**\n*schalte den Ping mit \`/level ping ${ping[1]}\` ${ping[0]}*`)
       .setFooter(`Level ${newLevel} - XP ${user.xp} | Tesh-Level-System`, msg.guild.iconURL());
     for (let i = 0; i < module.level.length; i++) {
       if (module.level[i].index == newLevel) {
