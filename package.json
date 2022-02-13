@@ -7,8 +7,8 @@
   "test": "echo \"Test Start:\" && node index.js && exit 1",
   "coms": "node newcoms.js",
   "comg": "node newcomg.js",
-  "monit": "pm2 start index.js && pm2 monit",
-  "log": "pm2 start index.js && pm2 logs --out",
+  "monit": "pm2 start index.js -f && pm2 monit",
+  "log": "pm2 start index.js -f && pm2 logs --out",
   "boot": "pm2 start index.js"
  },
  "author": "Teshi",
