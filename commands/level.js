@@ -34,7 +34,8 @@ module.exports = {
         .addBooleanOption(option =>
           option
             .setName('setting')
-            .setDescription('schalte an oder aus')))
+            .setDescription('schalte an oder aus')
+            .setRequired(true)))
     .addSubcommand(subcommand =>
       subcommand
         .setName('custom')
