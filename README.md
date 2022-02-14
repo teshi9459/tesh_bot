@@ -2,12 +2,12 @@
 *(only available in German and on German servers)*
 
 Dieser [Discord](https://discord.com/)-Bot wird
-[24/7 gehostet](https://gameserver.gratis/) und ist so jeder Zeit zum Überwachen des Roleplays bereit.
+[24/7 gehostet](https://something.host/en/) und ist so jeder Zeit zum Überwachen des Roleplays bereit.
 Aktuell ist es ratsam ihn nur mit Aufsicht vom Host auf Server einzuladen.
 ## Installation/Einladung
 1. informiere den Bot Host über GitHub (teshi9459) oder Discord (teshi#9459)
-2. lade den bot per [Link](https://discord.com/api/oauth2/authorize?client_id=867850838752100424&permissions=8&scope=bot%20applications.commands) ein
-3. richte ihn selbst ein oder lass das Teshi übernehmen
+2. lade den bot per Link (vom Host erhaltbar) ein
+3. richte ihn selbst ein oder lass das den Host übernehmen
 4. entdecke die tollen Bot Features uwu
 
 ## Aktive Server:
