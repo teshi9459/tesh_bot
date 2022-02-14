@@ -46,13 +46,28 @@ module.exports = {
     .addSubcommand(subcommand =>
       subcommand
         .setName('clear')
-        .setDescription('löscht einen besonderen Leveltext oder eine Levelrolle').addIntegerOption(option => option.setName('level').setDescription('Level welches ausgewählt werden soll').setRequired(true))),
+        .setDescription('löscht einen besonderen Leveltext oder eine Levelrolle').addIntegerOption(option => option.setName('level').setDescription('Level welches ausgewählt werden soll').setRequired(true)))
+    .addSubcommand(subcommand =>
+      subcommand
+        .setName('boost_role')
+        .setDescription('dauerhafter Xp-Boost für eine Rolle')
+        .addIntegerOption(option => option.setName('boost').setDescription('um wie viel die neuen XP multipliziert werden sollen| >1').setRequired(true))
+        .addRoleOption(option => option.setName('rolle').setDescription('welche Rolle').setRequired(true)))
+    .addSubcommand(subcommand =>
+      subcommand
+        .setName('boost_time')
+        .setDescription('zeitweiser Xp-Boost für alle')
+        .addIntegerOption(option => option.setName('boost').setDescription('um wie viel die neuen XP multipliziert werden sollen| >1').setRequired(true))
+        .addIntegerOption(option => option.setName('zeit').setDescription('wie lange in stunden').setRequired(true)))
+    .addSubcommand(subcommand =>
+      subcommand
+        .setName('boost_del')
+        .setDescription('zeigt Booster Liste zum löschen')),
   async execute(client, interaction) {
-    let server;
-    let module;
+    let server = db.getServer(interaction.guildId);
+    let module = db.getModuleS(server, 'level');
     switch (interaction.options.getSubcommand()) {
       case 'setup':
-        server = db.getServer(interaction.guildId);
         if (!interaction.member.roles.cache.has(server.adminrole)) {
           interaction.reply({
             content: `nur <@&${server.adminrole}> können das machen`, ephemeral: true
@@ -62,14 +77,12 @@ module.exports = {
         lv.setup(interaction, server);
         break;
       case 'clear':
-        server = db.getServer(interaction.guildId);
         if (!interaction.member.roles.cache.has(server.adminrole)) {
           interaction.reply({
             content: `nur <@&${server.adminrole}> können das machen`, ephemeral: true
           });
           return;
         }
-        module = db.getModuleS(server, 'level');
         //clear
         for (let i = 0; i < module.level.length; i++) {
           if (module.level[i].index == interaction.options.getInteger('level')) {
@@ -80,14 +93,12 @@ module.exports = {
         interaction.reply(`Level ${interaction.options.getInteger('level')} hat nun keine Rolle oder besondere Nachricht mehr`);
         break;
       case 'costum':
-        server = db.getServer(interaction.guildId);
         if (!interaction.member.roles.cache.has(server.adminrole)) {
           interaction.reply({
             content: `nur <@&${server.adminrole}> können das machen`, ephemeral: true
           });
           return;
         }
-        module = db.getModuleS(server, 'level');
         module.level.push({
           index: interaction.options.getInteger('level'),
           text: interaction.options.getString('text'),
@@ -97,14 +108,12 @@ module.exports = {
         interaction.reply(`Level ${interaction.options.getInteger('level')} hat nun den Text: \`${interaction.options.getString('text')}\` und man bekommt die Rolle: <@&${interaction.options.getRole('rolle').id}>`);
         break;
       case 'power':
-        server = db.getServer(interaction.guildId);
         if (!interaction.member.roles.cache.has(server.adminrole)) {
           interaction.reply({
             content: `nur <@&${server.adminrole}> können das machen`, ephemeral: true
           });
           return;
         }
-        module = db.getModuleS(server, 'level');
         module.enabled = interaction.options.getBoolean('setting');
         db.updateModuleS(server, module);
         let sett = 'aus';
@@ -112,7 +121,6 @@ module.exports = {
         interaction.reply('das Modul ist nun ` ' + sett + ' `');
         break;
       case 'ping':
-        server = db.getServer(interaction.guildId);
         const user = db.getUser(server, interaction.member.id);
         user.levelPing = interaction.options.getBoolean('setting');
         db.updateUser(server, user);
@@ -124,6 +132,24 @@ module.exports = {
         break;
       case 'card':
         lv.getCard(interaction);
+        break;
+      case 'boost_role':
+        if (module.boostRoles === undefined)
+          module.boostRoles = [];
+        module.boostRoles.push({ role: interaction.options.getRole('role').id, index: interaction.options.getInteger('boost') });
+        db.updateModuleS(server, module);
+        break;
+      case 'boost_time':
+        module.boostTime = { end: interaction.createdTimestamp + interaction.options.getInteger('zeit') * 60 * 60 * 1000, index: interaction.options.getInteger('boost') };
+        db.updateModuleS(server, module);
+        break;
+      case 'boost_del':
+        if (module.boostRoles === undefined)
+          module.boostRoles = [];
+        if (module.boostRoles === undefined)
+          module.boostRoles = 1;
+        module.boostRoles.push({ role: interaction.options.getRole('role').id, index: interaction.options.getInteger('boost') });
+        db.updateModuleS(server, module);
         break;
     }
   },
