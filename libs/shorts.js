@@ -7,10 +7,11 @@ const dc = require('../libs/dc');
 
 module.exports = {
  wordsSetup: function (interaction) {
-  const words = require('../module/words');
+  const words = require('../message/words');
   let server = db.getServer(interaction.guildId);
   let module;
-  const answer = {content: [], 
+  const answer = {
+   content: ' ',
    embeds: [dc.makeSimpleEmbed(interaction, '#c9f4ff',
     'Modul Words Setup',
     'Das Modul **words** wurde erstellt und kann jetzt benutz werden')],

@@ -1,30 +1,36 @@
 const fs = require('fs');
 const db = require('../libs/db');
+const tk = require('../libs/ticket');
 module.exports = {
  name: 'messageCreate',
  execute(client, message) {
-  if (message.author.bot)return;
-  //server
-  let server;
-  try {
-   server = db.getServer(message.guildId);
-  } catch (error) {
-   message.reply('bitte führe zuerst das setup für den Bot aus');
-  }
-  //user
-  let user;
-  try {
-   user = db.getUser(server, message.author.id);
-  } catch (error) {
-   db.setUser(server, message.author);
-  }
-  if (message.author.bot) return;
-  const commandFiles = fs.readdirSync('./module').filter(file => file.endsWith('.js'));
-  for (const file of commandFiles) {
-   const command = require(`../module/${file}`);
-   if (command.data.setup && fs.existsSync(`./DB/${server.id}/modules/${command.data.id}.json`)) {
+try {
+ const ticketFiles = fs.readdirSync(`./DB/${message.guildId}/tickets/`).filter(file => file.endsWith('.json'));
+  for (const file of ticketFiles) {
+   const ticket = require(`../DB/${message.guildId}/tickets/${file}`);
+   if (ticket.channel == message.channel.id) {
     try {
-     command.start(message);
+     tk.save(message);
+    } catch (error) {
+     console.error(error);
+     message.reply('Ein Fehler ist aufgetreten qwq\n*kontaktiere den Developer*');
+    }
+    return;
+   }
+  }
+} catch (e) {}
+  
+  if (message.author.bot) return;
+  const commandFiles = fs.readdirSync('./message/').filter(file => file.endsWith('.js'));
+  for (const file of commandFiles) {
+   const modul = require(`../message/${file}`);
+   if (fs.existsSync(`./DB/${message.guildId}/modules/${modul.data.id}.json`)) {
+    const config = db.getModuleS({
+     id: message.guildId
+    }, modul.data.id);
+    if (!config.enabled) return;
+    try {
+     modul.start(message);
     } catch (error) {
      console.error(error);
      message.reply('Ein Fehler ist aufgetreten qwq\n*kontaktiere den Developer*');

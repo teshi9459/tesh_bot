@@ -1,10 +1,11 @@
 const t = require('./tools');
+const fs = require('fs');
 module.exports = {
  setServer: function (guild, options) {
   const obj = {
    id: guild.id
   };
-  t.setJ(`./DB/${obj.id}/server.json`, obj, true);
+  t.setJ(`./DB/${obj.id}/server.json`, obj);
   if (options === true)
    console.log(`db> set guild ${guild.name} (${obj.id})`);
  },
@@ -179,4 +180,15 @@ module.exports = {
   if (options === true)
    console.log(`db> del Reports @${user.id}@${server.id}`);
  },
+ getChars: function (server, user, options) {
+  let chars = [];
+  const charFiles = fs.readdirSync(`./DB/${server.id}/modules`).filter(file => file.endsWith('.json'));
+  for (const file of charFiles) {
+   const char = t.getJ(`./DB/${server.id}/user/${user.id}/character/${file}`, options);
+   chars.push(char);
+  }
+  if (options === true)
+   console.log(`db> get ${chars.length} Chars @${user.id}@${server.id}`);
+  return chars;
+ }
 };

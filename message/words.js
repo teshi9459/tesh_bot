@@ -6,30 +6,33 @@ module.exports = {
   setup: true
  },
  start: function (msg) {
-  const server = db.getServer(msg.guildId);
-  let user = db.getUser(server, msg.author.id);
-  let reports = db.getReports(server, user);
-  const channel = db.getChannels(server);
+  let user;
   try {
+   const server = db.getServer(msg.guildId);
+    try {
+  user = db.getUser(server, msg.author.id);
+  } catch (e) {
+   db.setUser(server,msg.author);
+  user = db.getUser(server, msg.author.id);
+  }
+   let reports = db.getReports(server, user);
+   const channel = db.getChannels(server);
    let module = db.getModuleS(server, 'words');
    if (module.enabled)
     this.main(msg, server, module, user, reports, channel);
   } catch (e) {
    console.error(e);
-   msg.reply('Bitte starte zuerst das setup für\`words\`');
   }
  },
  main: function (msg, server, module, user, reports, channel) {
-  if (msg.content.includes('(') || msg.content.includes(')') ||
-   msg.content.includes('[') || msg.content.includes(']') ||
-   msg.content.includes('{') || msg.content.includes('}')) return;
+  if (msg.content.includes('(') || msg.content.includes(')')) return;
   for (let i = 0; i < channel.length; i++) {
    if (msg.channel.parentId == channel[i]) {
     const message = msg.content.split(' ');
     if (message.length > module.min && message.length < module.max) {
-     msg.reply(module.txt).then(msg => {
-      dc.delMsg(msg, module.delTime);
-     });
+     // msg.reply(module.txt).then(msg => {
+     // dc.delMsg(msg, module.delTime);
+     // });
      db.newReport(server, user, {
       id: 'words',
       level: module.reportLevel,
@@ -52,7 +55,7 @@ module.exports = {
   module.max = 10;
   module.min = 2;
   module.reportLevel = 2;
-  module.delTime = 60000;
+  module.delTime = 5*60*1000;
   module.txt = '>>> Verwarnung Words';
   const category = dc.getChannel(interaction,
    server.category);
@@ -61,7 +64,7 @@ module.exports = {
     type: "GUILD_TEXT"
    }).then(channel => {
     channel.setParent(category);
-    channel.permissionOverwrites.edit(interaction.guild.id, {
+    channel.permissionOverwrites.edit(interaction.guildId, {
      VIEW_CHANNEL: false
     });
     channel.permissionOverwrites.edit(server.adminrole, {
