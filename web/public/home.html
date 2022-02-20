@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="UTF-8">
+ <meta name="description" content="Website for Tesh Bot">
+ <meta name="keywords" content="Tesh Bot, Discord,Roleplay">
+ <meta name="author" content="Teshi">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Teshboard</title>
+ <link rel="stylesheet" href="style.css">
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+ <!-- <base href="http://teshi.vastserve.com" target="_blank"> -->
+</head>
+
+
+<body>
+ <nav>
+  <div class="topnav">
+   <a class="active" href="home.html">Home</a>
+   <a href="analytics.html">Analytics</a>
+   <a href="settings.html">Settings</a>
+   <a href="help.html">Help</a>
+   <a href="about.html">About</a>
+  </div>
+ </nav>
+ <nav>
+  <p>
+
+  </p>
+ </nav>
+ <main>
+  <h1><br />Home</h1>
+  <p>
+   Willkommen auf dem Teshboard. <br /> Hier kannst du die aktuellen Stats vom <a href="https://discord.gg/2T2NjAeUVP">Canol Fantasy Server</a> anschauen. Ich arbeite dran, dass bald alle Tesh-Server hier einsehbar sind.
+  </p>
+  <h2>Stats</h2>
+  <p id="stats">
+   ...
+  </p>
+  <script>
+   $(document).ready(function() {
+    $.getJSON("...", function(data) {
+     document.getElementById("stats").innerHTML = "Server ID: "+data.id;
+    }).fail(function(error) {
+     console.log("An error has occurred.");
+    });
+   });
+  </script>
+ </main>
+ <footer>
+  <p>
+   Tesh-Bot by Teshi 2022
+  </p>
+ </footer>
+</body>
+</html>
