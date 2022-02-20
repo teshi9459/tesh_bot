@@ -53,19 +53,19 @@ module.exports = {
   .setDescription('dauerhafter Xp-Boost für eine Rolle')
   .addIntegerOption(option => option.setName('boost').setDescription('um wie viel die neuen XP multipliziert werden sollen| >1').setRequired(true))
   .addRoleOption(option => option.setName('rolle').setDescription('welche Rolle').setRequired(true))
-  .setDefaultPermission(false))
+  )
  .addSubcommand(subcommand =>
   subcommand
   .setName('boost_time')
   .setDescription('zeitweiser Xp-Boost für alle')
   .addIntegerOption(option => option.setName('boost').setDescription('um wie viel die neuen XP multipliziert werden sollen| >1').setRequired(true))
   .addIntegerOption(option => option.setName('zeit').setDescription('wie lange in stunden').setRequired(true))
-  .setDefaultPermission(false))
+  )
  .addSubcommand(subcommand =>
   subcommand
   .setName('boost_del')
   .setDescription('zeigt Booster Liste zum löschen')
-  .setDefaultPermission(false)),
+  ),
  async execute(client, interaction) {
   let server = db.getServer(interaction.guildId);
   let module = db.getModuleS(server, 'level');
