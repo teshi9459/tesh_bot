@@ -8,7 +8,7 @@ module.exports = {
   .setTitle(title)
   .setDescription(text)
   .setThumbnail(interaction.client.user.avatarURL())
-  .setFooter(`${interaction.guild.name} | ${interaction.client.user.username}-Bot`, interaction.guild.iconURL());
+  .setFooter(interaction.guild.name+" | "+interaction.client.user.username+"-Bot", interaction.guild.iconURL());
   return Embed;
  },
  getChannel: function(message, id) {
