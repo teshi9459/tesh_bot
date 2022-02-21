@@ -7,10 +7,10 @@
   "test": "echo \"Test Start:\" && node index.js && exit 1",
   "coms": "node newcoms.js",
   "comg": "node newcomg.js",
-  "monit": "pm2 start index.js -f && pm2 monit",
-  "log": "pm2 start index.js -f && pm2 logs --out",
-  "start": "pm2 start index.js",
-  "boot": "cd tesh_bot;clear;echo FETCH DATA;git pull origin main; npm install; pm2 kill;  echo STARTE WEBSERVER; pm2 start web/web.js -f; echo STARTE BOT CLIENT; pm2 start index.js -f; echo ALL SCRIPTS ARE RUNNING;  pm2 save --force; pm2 list;"
+  "monit": "npx pm2 start index.js -f && npx pm2 monit",
+  "log": "npx pm2 start index.js -f && npx pm2 logs --out",
+  "start": "npx pm2 start index.js",
+  "boot": "clear;echo FETCH DATA;git pull origin main; npm install; npx pm2 kill;  echo STARTE WEBSERVER; npx pm2 start web/web.js -f; echo STARTE BOT CLIENT; npx pm2 start index.js -f; echo ALL SCRIPTS ARE RUNNING;  npx pm2 save --force; npx pm2 list;"
  },
  "author": "Teshi",
  "license": "MIT",
@@ -18,7 +18,7 @@
   "@discordjs/builders": "^0.7.0",
   "@discordjs/rest": "^0.1.0-canary.0",
   "discord-api-types": "^0.24.0",
-  "discord.js": "^13.2.0",
+  "discord.js": "^13.6.0",
   "express": "^4.17.3",
   "jimp": "^0.16.1"
  }

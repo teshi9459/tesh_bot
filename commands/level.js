@@ -53,19 +53,19 @@ module.exports = {
   .setDescription('dauerhafter Xp-Boost für eine Rolle')
   .addIntegerOption(option => option.setName('boost').setDescription('um wie viel die neuen XP multipliziert werden sollen| >1').setRequired(true))
   .addRoleOption(option => option.setName('rolle').setDescription('welche Rolle').setRequired(true))
-  )
+ )
  .addSubcommand(subcommand =>
   subcommand
   .setName('boost_time')
   .setDescription('zeitweiser Xp-Boost für alle')
   .addIntegerOption(option => option.setName('boost').setDescription('um wie viel die neuen XP multipliziert werden sollen| >1').setRequired(true))
   .addIntegerOption(option => option.setName('zeit').setDescription('wie lange in stunden').setRequired(true))
-  )
+ )
  .addSubcommand(subcommand =>
   subcommand
   .setName('boost_del')
   .setDescription('zeigt Booster Liste zum löschen')
-  ),
+ ),
  async execute(client, interaction) {
   let server = db.getServer(interaction.guildId);
   let module = db.getModuleS(server, 'level');
@@ -137,6 +137,13 @@ module.exports = {
     lv.getCard(interaction);
     break;
    case 'boost_role':
+    if (!interaction.member.roles.cache.has(server.adminrole)) {
+     interaction.reply({
+      content: `nur <@&${server.adminrole}> können das machen`, ephemeral: true
+     });
+     return;
+    }
+
     if (module.boostRoles === undefined)
      module.boostRoles = [];
     module.boostRoles.push({
@@ -145,6 +152,13 @@ module.exports = {
     db.updateModuleS(server, module);
     break;
    case 'boost_time':
+    if (!interaction.member.roles.cache.has(server.adminrole)) {
+     interaction.reply({
+      content: `nur <@&${server.adminrole}> können das machen`, ephemeral: true
+     });
+     return;
+    }
+
     module.boostTime = {
      end: interaction.createdTimestamp + interaction.options.getInteger('zeit') * 60 * 60 * 1000,
      index: interaction.options.getInteger('boost')
@@ -152,14 +166,13 @@ module.exports = {
     db.updateModuleS(server, module);
     break;
    case 'boost_del':
-    if (module.boostRoles === undefined)
-     module.boostRoles = [];
-    if (module.boostRoles === undefined)
-     module.boostRoles = 1;
-    module.boostRoles.push({
-     role: interaction.options.getRole('role').id, index: interaction.options.getInteger('boost')
-    });
-    db.updateModuleS(server, module);
+    if (!interaction.member.roles.cache.has(server.adminrole)) {
+     interaction.reply({
+      content: `nur <@&${server.adminrole}> können das machen`, ephemeral: true
+     });
+     return;
+    }
+    lv.boostDel(interaction);
     break;
   }
  },
