@@ -181,12 +181,12 @@ module.exports = {
   let boost = 0;
   if (module.boostRoles != undefined) {
    for (let i = 0; i < module.boostRoles.length; i++) {
-    if (member.roles.cache.some(role => role.id == module.boostRoles[i].role)) boost += module.boostRoles[i].index;
+    if (member.roles.cache.some(role => role.id == module.boostRoles[i].role)) boost = boost * module.boostRoles[i].index;
    }
   }
   if (module.boostTime != undefined) {
    if (module.boostTime.end > new Date())
-    boost += module.boostTime.index;
+    boost = boost * module.boostTime.index;
    else
     module.boostTime = undefined;
   }
@@ -269,7 +269,7 @@ module.exports = {
 
   collector.on('end',
    collected => {
-    interaction.deleteReply();
-   });
- }
-};
+    interaction.deleteReply(;
+    });
+  }
+ };
