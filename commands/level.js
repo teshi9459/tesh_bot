@@ -2,6 +2,8 @@ const {
  SlashCommandBuilder
 } = require('@discordjs/builders');
 const db = require('../libs/db');
+const dc = require('../libs/dc');
+const ms = require('ms');
 const lv = require('../message/level');
 module.exports = {
  data: new SlashCommandBuilder()
@@ -51,14 +53,14 @@ module.exports = {
   subcommand
   .setName('boost_role')
   .setDescription('dauerhafter Xp-Boost für eine Rolle')
-  .addIntegerOption(option => option.setName('boost').setDescription('um wie viel die neuen XP multipliziert werden sollen| >1').setRequired(true))
+  .addIntegerOption(option => option.setName('boost').setDescription('um wie viel die neuen XP multipliziert werden sollen (50% = 1.5)| >1').setRequired(true))
   .addRoleOption(option => option.setName('rolle').setDescription('welche Rolle').setRequired(true))
  )
  .addSubcommand(subcommand =>
   subcommand
   .setName('boost_time')
   .setDescription('zeitweiser Xp-Boost für alle')
-  .addIntegerOption(option => option.setName('boost').setDescription('um wie viel die neuen XP multipliziert werden sollen| >1').setRequired(true))
+  .addIntegerOption(option => option.setName('boost').setDescription('um wie viel die neuen XP multipliziert werden sollen (50% = 1.5)| >1').setRequired(true))
   .addIntegerOption(option => option.setName('zeit').setDescription('wie lange in stunden').setRequired(true))
  )
  .addSubcommand(subcommand =>
@@ -147,9 +149,12 @@ module.exports = {
     if (module.boostRoles === undefined)
      module.boostRoles = [];
     module.boostRoles.push({
-     role: interaction.options.getRole('role').id, index: interaction.options.getInteger('boost')
+     role: interaction.options.getRole('rolle').id, index: interaction.options.getInteger('boost')
     });
     db.updateModuleS(server, module);
+
+    interaction.reply({
+     embeds: [dc.makeSimpleEmbed(interaction, "#aaeeff", "Boost Rolle erstellt", "Für die Rolle <@&" + interaction.options.getRole('rolle')+ "> ist ein Boost von "+ interaction.options.getInteger('boost')+"x aktiv")]});
     break;
    case 'boost_time':
     if (!interaction.member.roles.cache.has(server.adminrole)) {
@@ -159,11 +164,14 @@ module.exports = {
      return;
     }
 
+    const time = interaction.options.getInteger('zeit') * 60 * 60 * 1000;
     module.boostTime = {
-     end: interaction.createdTimestamp + interaction.options.getInteger('zeit') * 60 * 60 * 1000,
+     end: Date.now() + time,
      index: interaction.options.getInteger('boost')
     };
     db.updateModuleS(server, module);
+    interaction.reply({
+     embeds: [dc.makeSimpleEmbed(interaction, "#aaeeff", "Boost erstellt", "Für " + ms(time)+ " ist ein Boost von "+ interaction.options.getInteger('boost')+"x aktiv")]});
     break;
    case 'boost_del':
     if (!interaction.member.roles.cache.has(server.adminrole)) {

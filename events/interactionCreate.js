@@ -1,11 +1,12 @@
-module.exports = {
- name: 'interactionCreate',
- async execute(client, interaction) {
-  if (interaction.isButton()) return;
-  const fs = require('fs');
+ const fs = require('fs');
   const {
    Collection
   } = require('discord.js');
+  module.exports = {
+ name: 'interactionCreate',
+ async execute(client, interaction) {
+  if (interaction.isButton()) return;
+  if (interaction.isSelectMenu()) return;
   client.commands = new Collection();
   const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
