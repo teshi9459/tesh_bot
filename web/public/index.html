@@ -9,7 +9,7 @@
  <title>Teshboard</title>
  <link rel="stylesheet" href="style.css">
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
- <!-- <base href="http://teshi.vastserve.com" target="_blank"> -->
+ <!-- <base href="https://service-8453.something.gg/" target="_blank"> -->
 </head>
 
 <body>
@@ -21,87 +21,98 @@
    <a href="help.html">Help</a>
    <a href="about.html">About</a>
   </div>
-  <div class="login">
-   <button onclick="location.href='https://discord.com/api/oauth2/authorize?client_id=869927535473995857&redirect_uri=http%3A%2F%2Flocalhost%3A20000%2F&response_type=token&scope=identify%20guilds%20guilds.members.read'" type="button"><span>Login </span></button>
-  </div>
-  <div class="navsel">
-   <img class="userAvatar" id="userAvatar" src="media/images/pb.webp" alt="user" />
-   <div class="usersel">
-    <p>
-     logout
-    </p>
-   </div>
-  </div>
-  <div class="navsel">
-   <img class="guildAvatar" id="guildAvatar" src="media/images/pb.webp" alt="guild" />
-  </nav>
+ </nav>
 
-  <main>
-   <br />
-   <div class="homestart">
-    <h1>Home</h1>
-    <script>
-     window.onload = () => {
-      const fragment = new URLSearchParams(window.location.hash.slice(1));
-      if (localStorage['access_token'] === undefined) {
-       const [accessToken,
-        tokenType] = [fragment.get('access_token'),
-        fragment.get('token_type')];
-       if (!accessToken) {
-        return document.getElementById('login').style.display = 'block';
-       }
+ <div class="login">
+  <button onclick="location.href='https://discord.com/api/oauth2/authorize?client_id=928046206502977636&redirect_uri=https%3A%2F%2Fservice-8453.something.gg&response_type=token&scope=identify%20guilds%20guilds.members.read'" type="button"><span>Login </span></button>
+ </div>
 
-       localStorage['access_token'] = accessToken;
-       localStorage['token_type'] = tokenType;
-      }
+ <div class="navsel">
+  <img class="userAvatar" id="userAvatar" src="media/images/pb.webp" alt="user" />
+  <div class="usersel">
+   <span class="usertag" id="userseltag">user</span>
+   <button type="button" onclick="logout()">Logout</button>
+   <script>
+    function logout() {
+     localStorage.clear();
+     console.log("cleared local storage");
+     location.reload();
+    }
+   </script>
+  </div>
+ </div>
+ <div class="navsel">
+  <img class="guildAvatar" id="guildAvatar" src="media/images/pb.webp" alt="guild" />
+ </div>
+ <main>
+  <br />
+  <div class="homestart">
+   <h1>Home</h1>
+   <script>
+    window.onload = () => {
+     const fragment = new URLSearchParams(window.location.hash.slice(1));
+     if (localStorage['access_token'] === undefined) {
       const [accessToken,
-       tokenType] = [localStorage['access_token'],
-       localStorage['token_type']];
-      fetch('https://discord.com/api/users/@me', {
-       headers: {
-        authorization: `${tokenType} ${accessToken}`,
-       },
-      })
-      .then(result => result.json())
-      .then(response => {
-       const {
-        username, discriminator, avatar, id
-       } = response;
-       document.getElementById("userAvatar").src = "https://cdn.discordapp.com/avatars/"+id+"/"+avatar+".png?size=100";
-       document.querySelectorAll(".login").forEach(a=>a.style.display = "none");
-       document.querySelectorAll(".navsel").forEach(a=>a.style.display = "block");
-       document.getElementById('id').innerText += username+'#'+discriminator+' '+id;
-      })
-      .catch(console.error);
-     };
-    </script>
-    <p id="id">
-     hi:
-    </p>
-    <p>
-     Willkommen auf dem Teshboard. <br /> Hier kannst du die aktuellen Stats vom <a href="https://discord.gg/2T2NjAeUVP">Canol Fantasy Server</a> anschauen. Ich arbeite dran, dass bald alle Tesh-Server hier einsehbar sind.
-    </p>
-   </div>
-   <div class=homestats>
-    <h2>Stats</h2>
-    <p id="server">
-     ...
-    </p>
-    <script>
-     $(document).ready(function() {
-      $.getJSON("...", function(data) {
-       document.getElementById("server").innerHTML = "Server ID: "+data.id;
-      }).fail(function(error) {
-       console.log("An error has occurred.");
-      });
-     });
-    </script>
-   </div>
-  </main>
-  <footer>
+       tokenType] = [fragment.get('access_token'),
+       fragment.get('token_type')];
+      if (!accessToken) {
+       return document.getElementById('login').style.display = 'block';
+      }
+
+      localStorage['access_token'] = accessToken;
+      localStorage['token_type'] = tokenType;
+      window.location.href = "https://service-8453.something.gg/";
+     }
+     const [accessToken,
+      tokenType] = [localStorage['access_token'],
+      localStorage['token_type']];
+     fetch('https://discord.com/api/users/@me', {
+      headers: {
+       authorization: `${tokenType} ${accessToken}`,
+      },
+     })
+     .then(result => result.json())
+     .then(response => {
+      const {
+       username, discriminator, avatar, id
+      } = response;
+      document.getElementById("userAvatar").src = "https://cdn.discordapp.com/avatars/"+id+"/"+avatar+".png?size=100";
+      document.querySelectorAll(".login").forEach(a=>a.style.display = "none");
+      document.querySelectorAll(".navsel").forEach(a=>a.style.display = "block");
+
+      for (let i = 0; i < document.getElementsByClassName('usertag').length; i++) {
+       document.getElementsByClassName('usertag')[i].innerText = username+'#'+discriminator;
+      }
+
+     })
+     .catch(console.error);
+    };
+   </script>
    <p>
-    Tesh-Bot by Teshi 2022
+    Willkommen
+    <span class="usertag"></span> auf dem Teshboard. <br /> Hier kannst du die aktuellen Stats vom <a href="https://discord.gg/2T2NjAeUVP">Canol Fantasy Server</a> anschauen. Ich arbeite dran, dass bald alle Tesh-Server hier einsehbar sind.
    </p>
-  </footer>
- </body>
+  </div>
+  <div class=homestats>
+   <h2>Stats</h2>
+   <p id="server">
+    ...
+   </p>
+   <script>
+    $(document).ready(function() {
+     $.getJSON("...", function(data) {
+      document.getElementById("server").innerHTML = "Server ID: "+data.id;
+     }).fail(function(error) {
+      console.log("An error has occurred.");
+     });
+    });
+   </script>
+  </div>
+ </main>
+ <footer>
+  <p>
+   Tesh-Bot by Teshi 2022
+  </p>
+ </footer>
+</body>
 </html>
