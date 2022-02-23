@@ -216,7 +216,7 @@ module.exports = {
    description: 'löscht den zeitlichen Boost',
    value: interaction.guildId+'_time',
   }];
-  if (module.boostRoles === undefined || module.boostRoles === null) {
+  if (module.boostRoles === undefined || module.boostRoles.length === 0) {
    roletext = 'Keine Boostrollen eingerichtet';
    Embed.addField('Rollen', roletext);
   } else {
@@ -243,7 +243,7 @@ module.exports = {
   const filter = i => i.customId === interaction.guildId+'_boostdel';
   const collector = interaction.channel.createMessageComponentCollector({
    filter,
-   time: 0.5*60*1000
+   time: 5*60*1000
   });
   collector.on('collect',
    async i => {
@@ -272,4 +272,4 @@ module.exports = {
     interaction.deleteReply()
    });
  }
- };
+};
