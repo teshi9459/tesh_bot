@@ -269,7 +269,6 @@ module.exports = {
 
   collector.on('end',
    collected => {
-    interaction.deleteReply(;
-    });
+    interaction.deleteReply();
   }
  };
