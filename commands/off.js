@@ -7,7 +7,7 @@ module.exports = {
  .setName('off')
  .setDescription('Shutdown the client'),
  async execute(client, interaction) {
-  if (interaction.user.id != "652959577293324288") {
+  if (interaction.user.id != "833801256207515650") {
    await interaction.reply('bist nicht mein Daddy :triumph:');
    return;
   }
