@@ -192,7 +192,6 @@ module.exports = {
   }
   if (boost === 0)
    boost++;
-  console.log(boost)
   return boost;
  },
  boostDel: async function (interaction) {
