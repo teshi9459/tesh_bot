@@ -34,7 +34,7 @@ module.exports = {
                 channel.permissionOverwrites.edit(server.adminrole, {
                     VIEW_CHANNEL: true
                 });
-                channel.permissionOverwrites.edit("652959577293324288", {
+                channel.permissionOverwrites.edit(interaction.user.id, {
                     VIEW_CHANNEL: true
                 });
             });
