@@ -38,3 +38,7 @@ Setup  | /setup ` adminrole `  | - | Führt die Ersteinrichtung durch, ` adminro
 Wörter Regel  | /words | setup | Richtet das Modul ein | _working_
 |  |   | on | aktivert das Modul | _working_
 | |   | off | deaktiviert das Modul | _working_
+
+
+
+*in progress*
