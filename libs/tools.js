@@ -1,5 +1,10 @@
 const fs = require('fs');
 module.exports = {
+ /**
+ * sortiert Arry
+ * @param {arry} ary - Arry zu sortieren.
+ * @param {boolean} options - if true log in the console.
+ */
  sort: function (ary, options) {
   ary = ary.sort(function (a, b) {
    return a - b;
