@@ -90,30 +90,29 @@ module.exports = {
    .setColor('#abeeff')
    .setTitle('Accepted 2/2')
    .setDescription(`Der Charcter wurde nun auch von <@!${interaction.user.id}> accepted. Glückwunsch!\n\n__Fertig?__ Schicke bitte deine Steckbrief noch mal \`so\` herein.\nDas machst du mit einem \` vor deinem Steckbrief und einem danach.`)
-   .setFooter(`$ {
+   .setFooter(`${
     interaction.user.tag
     } hat den Character accepted`, interaction.guild.iconURL());
-   tools.setJ(`./DB/$ {
+   tools.setJ(`./DB/${
     interaction.guildId
-    }/tickets/$ {
+    }/tickets/${
     interaction.channel.id
     }.json`, char);
    await interaction.reply({
     embeds: [Embed]});
-  // await interaction.channel.send("`<=====| Der Kurze Steckbrief |=====>\n**-------- 𝘎𝘳𝘶𝘯𝘥𝘪𝘯𝘧𝘰𝘳𝘮𝘢𝘵𝘪𝘰𝘯𝘦𝘯 --------**\n**Ganzer Name: **\n**Alter: **\n**Aussehen: **\n**Außergewöhnliches Merkmal: ** \n\n**Gilde: **\n**Rang: **\n**Klasse: ** \n**-------- 𝘗𝘦𝘳𝘴ö𝘯𝘭𝘪𝘤𝘩𝘬𝘦𝘪𝘵 --------**\n**Charakter: **\n\n\n(Bitte alles nur stichpunktartig ausfüllen, dies dient nur als kurze info für Leute mit denen ihr rpet und dem Bot. \nEntfent bitte diese Info!\nMaximal 4k Zeichen.)`");
   }
  },
  reject: function (interaction) {
   const server = db.getServer(interaction.guildId);
   const modul = db.getModuleS(server, 'abgabe');
-  let char = tools.getJ(`./DB/$ {
+  let char = tools.getJ(`./DB/${
    interaction.guildId
-   }/tickets/$ {
+   }/tickets/${
    interaction.channel.id
    }.json`);
   if (!interaction.member.roles.cache.has(modul.team)) {
    interaction.reply({
-    content: `nur < @&$ {
+    content: `nur < @&${
     modul.team
     } > können das machen`, ephemeral: true
    });
@@ -128,7 +127,7 @@ module.exports = {
   const row = new MessageActionRow()
   .addComponents(
    new MessageButton()
-   .setCustomId(`ticket_close@$ {
+   .setCustomId(`ticket_close@${
     interaction.channel.id
     }`)
    .setLabel('close')
@@ -141,9 +140,9 @@ module.exports = {
   const server = db.getServer(interaction.guildId);
   const modul = db.getModuleS(server,
    'abgabe');
-  let char = tools.getJ(`./DB/$ {
+  let char = tools.getJ(`./DB/${
    interaction.guildId
-   }/tickets/$ {
+   }/tickets/${
    interaction.channel.id
    }.json`);
   if (char.accepts.length != 2) {
@@ -155,13 +154,13 @@ module.exports = {
   const row = new MessageActionRow()
   .addComponents(
    new MessageButton()
-   .setCustomId(`yes_finish_abgabe@$ {
+   .setCustomId(`yes_finish_abgabe@${
     interaction.channel.id
     }`)
    .setLabel('Ja')
    .setStyle('SUCCESS'),
    new MessageButton()
-   .setCustomId(`no_finish_abgabe@$ {
+   .setCustomId(`no_finish_abgabe@${
     interaction.channel.id
     }`)
    .setLabel('Nein')
@@ -183,15 +182,15 @@ module.exports = {
     name: 'Gilde', value: sthp.getShorts('gilde', char.text)
    },
   )
-  .setFooter(`$ {
+  .setFooter(`${
    interaction.user.tag
    }`, interaction.guild.iconURL());
   interaction.reply({
    content: '>>> Sind diese Angaben richtig? (du kannst sie nur mit einer erneuten Abgabe oder durch einen Admin ändern!)', embeds: [Embed],
    components: [row]});
-  const filter = i => i.customId === `yes_finish_abgabe@$ {
+  const filter = i => i.customId === `yes_finish_abgabe@${
   interaction.channel.id
-  }` && i.user.id == char.user || i.customId === `no_finish_abgabe@$ {
+  }` && i.user.id == char.user || i.customId === `no_finish_abgabe@${
   interaction.channel.id
   }` && i.user.id == char.user;
 
@@ -202,19 +201,19 @@ module.exports = {
 
   collector.on('collect',
    async i => {
-    if (i.customId === `no_finish_abgabe@$ {
+    if (i.customId === `no_finish_abgabe@${
      interaction.channel.id
      }`) {
      i.update({
       content: 'gebe den Command bitte erneut mit dem richtigen Steckbrief ein', embeds: [], components: []});
-    } else if (i.customId === `yes_finish_abgabe@$ {
+    } else if (i.customId === `yes_finish_abgabe@${
      interaction.channel.id
      }`) {
      let num = 1;
      try {
-      const chars = fs.readdirSync(`./DB/$ {
+      const chars = fs.readdirSync(`./DB/${
        server.id
-       }/user/$ {
+       }/user/${
        ticket.user
        }/charcter/`).filter(file => file.endsWith('.json'));
       for (const file of chars) {
@@ -240,11 +239,11 @@ module.exports = {
        accept: new Date().getTime()
       }
      };
-     tools.setJ(`./DB/$ {
+     tools.setJ(`./DB/${
       interaction.guildId
-      }/user/$ {
+      }/user/${
       character.user
-      }/character/$ {
+      }/character/${
       character.id
       }.json`, character);
      i.member.roles.add(modul.rper);
