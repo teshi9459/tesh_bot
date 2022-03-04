@@ -9,16 +9,14 @@ try {
   for (const file of ticketFiles) {
    const ticket = require(`../DB/${message.guildId}/tickets/${file}`);
    if (ticket.channel == message.channel.id) {
-    try {
      tk.save(message);
-    } catch (error) {
-     console.error(error);
-     message.reply('Ein Fehler ist aufgetreten qwq\n*kontaktiere den Developer*');
-    }
     return;
    }
   }
-} catch (e) {}
+} catch (e) {
+  console.error(e);
+  message.reply('Ein Fehler ist aufgetreten qwq\n*kontaktiere den Developer*');
+}
   
   if (message.author.bot) return;
   const commandFiles = fs.readdirSync('./message/').filter(file => file.endsWith('.js'));
