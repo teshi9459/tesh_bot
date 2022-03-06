@@ -1,7 +1,7 @@
 const {
  SlashCommandBuilder
 } = require('@discordjs/builders');
-const charDb = require('../libs/charDb');
+const charDb = require('../../exports/slash/charDb');
 module.exports = {
  data: new SlashCommandBuilder()
  .setName('char')

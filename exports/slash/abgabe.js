@@ -1,7 +1,7 @@
-const db = require('../libs/db');
-const tools = require('../libs/tools');
-const dc = require('../libs/dc');
-const sthp = require('../libs/stringhelp');
+const db = require('../../libs/db');
+const tools = require('../../libs/tools');
+const dc = require('../../libs/dc');
+const sthp = require('../../libs/stringhelp');
 const {
  MessageEmbed,
  MessageActionRow,

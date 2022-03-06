@@ -1,5 +1,5 @@
-const t = require('./tools');
-const db = require('./db');
+const t = require('../../libs/tools');
+const db = require('../../libs/db');
 const fs = require('fs');
 const {
  MessageEmbed,

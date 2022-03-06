@@ -1,19 +1,26 @@
- const fs = require('fs');
-  const {
-   Collection
-  } = require('discord.js');
-  module.exports = {
+const fs = require('fs');
+const {
+ Collection
+} = require('discord.js');
+module.exports = {
  name: 'interactionCreate',
  async execute(client, interaction) {
   if (interaction.isButton()) return;
   if (interaction.isSelectMenu()) return;
   client.commands = new Collection();
-  const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
-  for (const file of commandFiles) {
-   const command = require(`../commands/${file}`);
-   client.commands.set(command.data.name, command);
+  const commandFolder = fs.readdirSync('./commands');
+
+  for (const folder of commandFolder) {
+   const commandFiles = fs.readdirSync('./commands/'+folder).filter(file => file.endsWith('.js'));
+
+   for (const file of commandFiles) {
+    const command = require(`../commands/${folder}/${file}`);
+    client.commands.set(command.data.name, command);
+   }
   }
+
+
   const date = new Date().toISOString();
   console.log(`\n${date}>> ${interaction.user.tag} triggered an interaction (${interaction.commandName}).`);
   let content;

@@ -10,8 +10,5 @@ module.exports = {
     name: 'mit RPern auf '+guilds.length+' Servern'
    }], status: 'online'
   });
-  if (!fs.existsSync(`./DB/`)) {
-   fs.mkdirSync(`./DB/`);
-  }
  },
 };

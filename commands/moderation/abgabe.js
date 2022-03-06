@@ -1,7 +1,7 @@
 const {
  SlashCommandBuilder
 } = require('@discordjs/builders');
-const abgabe = require('../libs/abgabe');
+const abgabe = require('../../exports/slash/abgabe');
 module.exports = {
  data: new SlashCommandBuilder()
  .setName('abgabe')

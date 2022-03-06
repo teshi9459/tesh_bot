@@ -1,27 +1,27 @@
 const fs = require('fs');
 const db = require('../libs/db');
-const tk = require('../libs/ticket');
+const tk = require('../exports/slash/ticket');
 module.exports = {
  name: 'messageCreate',
  execute(client, message) {
-try {
- const ticketFiles = fs.readdirSync(`./DB/${message.guildId}/tickets/`).filter(file => file.endsWith('.json'));
-  for (const file of ticketFiles) {
-   const ticket = require(`../DB/${message.guildId}/tickets/${file}`);
-   if (ticket.channel == message.channel.id) {
+  try {
+   const ticketFiles = fs.readdirSync(`./DB/${message.guildId}/tickets/`).filter(file => file.endsWith('.json'));
+   for (const file of ticketFiles) {
+    const ticket = require(`../DB/${message.guildId}/tickets/${file}`);
+    if (ticket.channel == message.channel.id) {
      tk.save(message);
-    return;
+     return;
+    }
    }
+  } catch (e) {
+   console.error(e);
+   message.reply('Ein Fehler ist aufgetreten qwq\n*kontaktiere den Developer*');
   }
-} catch (e) {
-  console.error(e);
-  message.reply('Ein Fehler ist aufgetreten qwq\n*kontaktiere den Developer*');
-}
-  
+
   if (message.author.bot) return;
-  const commandFiles = fs.readdirSync('./message/').filter(file => file.endsWith('.js'));
+  const commandFiles = fs.readdirSync('./exports/message/').filter(file => file.endsWith('.js'));
   for (const file of commandFiles) {
-   const modul = require(`../message/${file}`);
+   const modul = require(`../exports/message/${file}`);
    if (fs.existsSync(`./DB/${message.guildId}/modules/${modul.data.id}.json`)) {
     const config = db.getModuleS({
      id: message.guildId

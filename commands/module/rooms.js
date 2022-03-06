@@ -1,9 +1,9 @@
 const {
  SlashCommandBuilder
 } = require('@discordjs/builders');
-const db = require('../libs/db');
-const dc = require('../libs/dc');
-const rooms = require('../libs/rooms');
+const db = require('../../libs/db');
+const dc = require('../../libs/dc');
+const rooms = require('../../exports/slash/rooms');
 module.exports = {
  data: new SlashCommandBuilder()
  .setName('rooms')

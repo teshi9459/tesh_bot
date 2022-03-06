@@ -1,5 +1,5 @@
 const fs = require('fs');
-const tk = require('../libs/ticket');
+const tk = require('../exports/slash/ticket');
 module.exports = {
  name: 'interactionCreate',
  async execute(client, interaction) {
