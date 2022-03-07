@@ -183,7 +183,7 @@ img.guildAvatar {
  text-align: center;
 }
 .help ol {
- padding-left: 10px;
+ padding-left: 40px;
 }
 .help {
  width: 90%;
@@ -192,7 +192,7 @@ img.guildAvatar {
  text-align: center;
  font-size: 14px;
  border-radius: 3px;
- padding: 0px 2px;
+ padding: -2px 2px;
  background: #323232;
  color: #aaeeff;
  font-family: 'Courier New', monospace;
