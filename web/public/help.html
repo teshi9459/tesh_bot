@@ -46,7 +46,7 @@
  </div>
  <main>
   <br />
-  <div class="homestart">
+  <div>
    <h1>Help</h1>
    <script>
     window.onload = () => {
@@ -88,10 +88,64 @@
      .catch(console.error);
     };
    </script>
-   <p>
-    Willkommen
-    <span class="usertag"></span> auf dem Teshboard. <br /> Hier kannst du die aktuellen Stats vom <a href="https://discord.gg/2T2NjAeUVP">Canol Fantasy Server</a> anschauen. Ich arbeite dran, dass bald alle Tesh-Server hier einsehbar sind.
-   </p>
+   <div class="helpnav">
+    <a href="#help_setup">Setup</a>
+    <a href="#help_module">Module</a>
+    <a href="#help_level">Level</a>
+    <a href="#help_words">Words</a>
+    <a href="#help_rooms">Rooms</a>
+    <a href="#help_tickets">Tickets</a>
+    <a href="#help_commands">Commands</a>
+   </div>
+   <div class="help" id="help_setup">
+    <h3>Setup</h3>
+    <ol>
+     <li>lade den Bot per <a href="">Link</a> ein</li>
+     <li>führe <span class="command">/setup</span>  aus und gebe eine Rolle an, die Einstellungen am Bot vornehmnen kann <br /> <span class="info">für die meisten Module können neue Rollen definiert werden</span></li>
+     <li>jetzt füge mit <span class="command">/channel add</span> alle Kategorien hinzu die Roleplay-Channel enthalten</li>
+     <li>Nun ist der Bot startklar <br /><span class="info">beim aktivieren von Modulen erst den entsprechenden Setup-Command ausführen</span></li>
+    </ol>
+   </div>
+   <div class="help" id="help_module">
+    <h3>Module</h3>
+    <p>
+     Der Bot ist Modular aufgebaut, dh. man kann Features die nicht nur einen einzelnen Command beinhalten einzeln aktivieren oder deaktivieren. Dafür stehen bei allen Modulen ein <span class="command">/power</span> Command zur verfügung sowie ein <span class="command">/setup</span> Command.<br /><span class="info">Es wird dran gearbeitet Einstellungen sowie das aktivieren/deaktivieren von Modulen auf dieser Website zur verfügung zu stellen.</span>
+    </p>
+   </div>
+   <div class="help" id="help_level">
+    <h3>Level</h3>
+    <p>
+     <span class="command">/level</span><br />
+     Das Level-Module beinhaltet, dass Nachrichten aus Channeln ausgewählter Kategorien je nach Wortmenge eine Anzahl an Xp erzeugen, welche den User aufleveln lasssen. Es können dann für ereichte Level spezielle Nachrichten oder Rollen festgelegt werden. Für besondere Events können rollen oder zeitweise Boosts erstellt werden, welche die erhaltenen Xp um einen Faktor multiplizieren. Level und Xp können per Command eingesehen werden in vorm einer Level Card. Der Ping, welchen es bei jedem neuen Level gibt kann man ausstellen, falls dies dem User zu nervig sein sollte.
+    </p>
+   </div>
+   <div class="help" id="help_words">
+    <h3>Words</h3>
+    <p>
+     <span class="command">/words</span><br />
+     Das Words-Modul beinhaltet einen Wörter Zähler für jede Nachricht in ausgewählten Kategorien. Nachrichten die mit ( starten oder mit ) aufhören werden ignoriert. Wenn der bereich der Wörter innerhalb des festgelegtem Bereiches liegt wird eine Nachricht mit informationen in einen entsprechenden Log-Channel geschickt.
+    </p>
+   </div>
+   <div class="help" id="help_rooms">
+    <h3>Rooms</h3>
+    <p>
+     <span class="command">/rooms</span><br />
+     Der Bot unterstützt eine einfache Zimmer oder Wohnort verfaltung. Es werden Listen erstellt in die sich die User selbständig eintragen können, aber zum austragen ein Teammitglied informieren müssen (um heimliches wechseln zu vermeiden). Je nach freiem Platzt wird der User dann zugeteilt.
+    </p>
+   </div>
+   <div class="help" id="help_tickets">
+    <h3>Tickets</h3>
+    <p>
+     <span class="command">/ticket</span><br />
+     Auserdem unterstützt der Tesh Bot ein simples Ticket System. Es können Pannel mit eigenem Text erstellt werden, bei denen dann neue Private Channel erstellt werden in der zuvor ausgewählten Kategorie. Die Nachrichten in diesem Channel werden beim Schliesßen zusammen in eine txt Datei geschrieben und im Log-Channel für dieses Modul gespeichert.
+    </p>
+   </div>
+   <div class="help" id="help_commands">
+    <h3>Commands</h3>
+    <p>
+     liste incoming
+    </p>
+   </div>
   </div>
  </main>
  <footer>
