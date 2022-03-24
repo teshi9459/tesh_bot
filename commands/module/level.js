@@ -1,10 +1,10 @@
 const {
  SlashCommandBuilder
 } = require('@discordjs/builders');
-const db = require('../libs/db');
-const dc = require('../libs/dc');
+const db = require('../../libs/db');
+const dc = require('../../libs/dc');
 const ms = require('ms');
-const lv = require('../message/level');
+const lv = require('../../exports/message/level');
 module.exports = {
  data: new SlashCommandBuilder()
  .setName('level')

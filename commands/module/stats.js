@@ -1,8 +1,8 @@
 const {
     SlashCommandBuilder
 } = require('@discordjs/builders');
-const db = require('../libs/db');
-const stats = require('../message/stats');
+const db = require('../../libs/db');
+const stats = require('../../exports/message/stats');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('stats')

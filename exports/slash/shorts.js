@@ -2,8 +2,8 @@ const {
  MessageActionRow,
  MessageButton
 } = require('discord.js');
-const db = require('../libs/db');
-const dc = require('../libs/dc');
+const db = require('../../libs/db');
+const dc = require('../../libs/dc');
 
 module.exports = {
  wordsSetup: function (interaction) {
