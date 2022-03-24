@@ -15,7 +15,6 @@ module.exports = {
    }
   } catch (e) {
    console.error(e);
-   message.reply('Ein Fehler ist aufgetreten qwq\n*kontaktiere den Developer*');
   }
 
   if (message.author.bot) return;
