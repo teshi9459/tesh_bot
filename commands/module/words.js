@@ -81,9 +81,9 @@ module.exports = {
     return;
 
    case 'power':
-    module.enabled = interaction.getBoolean('status');
+    module.enabled = interaction.options.getBoolean('status');
     answer = 'Modul words ist nun `Aus`';
-    if (interaction.getBoolean('status'))
+    if (interaction.options.getBoolean('status'))
      answer = 'Modul words ist nun `An`';
     break;
   }
