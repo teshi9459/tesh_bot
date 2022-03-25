@@ -3,6 +3,10 @@ const {
 } = require('@discordjs/builders');
 const fs = require('fs');
 const archiver = require('archiver');
+const {
+ MessageActionRow,
+ MessageButton
+} = require('discord.js');
 
 module.exports = {
  data: new SlashCommandBuilder()
@@ -15,8 +19,7 @@ module.exports = {
    });
    return;
   };
-  interaction.reply("``` Backup wird generiert ```");
-
+  await interaction.reply("``` Backup wird generiert ```");
 
   var output = fs.createWriteStream('./backup.zip');
   var archive = archiver('zip');
@@ -24,16 +27,36 @@ module.exports = {
   output.on('close', function() {
    console.log(archive.pointer() + ' total bytes');
    console.log('archiver has been finalized and the output file descriptor has closed.');
-   interaction.editReply({
-    content: "``` Backup wurde erstellt ✓ ```\nbitte speicher die Datei ab\ndiese Nachricht wird in 1 min gelöscht", files: ['./backup.zip']});
-   setTimeout(function() {
-    interaction.deleteReply();
-   }, 61*1000);
-  });
+   if (archive.pointer() >= 8*1000*1000) {
+    fs.renameSync('./backup.zip', './web/public/backup.zip');
+    const row = new MessageActionRow()
+    .addComponents(
+     new MessageButton()
+     .setLabel('Download')
+     .setStyle('LINK')
+     .setURL('http://49.12.3.231:2000/download/backup'),
+    );
+    interaction.editReply({
+     content: "``` Backup wurde erstellt ✓ ```\nbitte speicher die Datei ab\ndie Datei wird in 3 min gelöscht", components: [row]
+    });
+    setTimeout(function() {
+     interaction.deleteReply();
+     fs.rmSync('./web/public/backup.zip', {
+      recursive: false
+     });
+    }, 3*61*1000);
+   } else {
+    interaction.editReply({
+     content: "``` Backup wurde erstellt ✓ ```\nbitte speicher die Datei ab\ndiese Nachricht wird in 1 min gelöscht", files: ['./backup.zip']});
+    setTimeout(function() {
+     interaction.deleteReply();
+    }, 61*1000);
+   }});
 
-  archive.on('error', function(err) {
-   throw err;
-  });
+  archive.on('error',
+   function(err) {
+    throw err;
+   });
 
   archive.pipe(output);
   if (interaction.user.id === '652959577293324288') {

@@ -10,7 +10,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 var publicPath = path.join(__dirname, 'public');
 
-
+app.get('/download/backup', function(req, res) {
+ const file = `${__dirname}/public/backup.zip`;
+ res.download(file);
+});
 
 
 router.get("/", function (req, res) {
