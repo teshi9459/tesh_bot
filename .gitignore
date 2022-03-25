@@ -105,7 +105,7 @@ dist
 
 #database
 DB/
-
+backup.zip
 #token
 config/
 config.json
