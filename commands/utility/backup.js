@@ -34,7 +34,7 @@ module.exports = {
      new MessageButton()
      .setLabel('Download')
      .setStyle('LINK')
-     .setURL('http://49.12.3.231:2000/download/backup'),
+     .setURL('http://tesh.gq/download/backup'),
     );
     interaction.editReply({
      content: "``` Backup wurde erstellt ✓ ```\nbitte speicher die Datei ab\ndie Datei wird in 3 min gelöscht", components: [row]

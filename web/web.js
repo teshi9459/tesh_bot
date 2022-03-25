@@ -1,10 +1,11 @@
 const express = require("express");
-const app = express();
-const router = express.Router();
 const path = require('path');
 const {
  port
 } = require('../config/config.json');
+
+const app = express();
+const router = express.Router();
 
 app.use(express.static(path.join(__dirname, 'public')));
 

@@ -9,7 +9,6 @@
  <title>Teshboard</title>
  <link rel="stylesheet" href="style.css">
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
- <!-- <base href="https://service-8453.something.gg/" target="_blank"> -->
 </head>
 
 <body>
@@ -24,7 +23,7 @@
  </nav>
 
  <div class="login">
-  <button onclick="location.href='https://discord.com/api/oauth2/authorize?client_id=928046206502977636&redirect_uri=https%3A%2F%2Fservice-8453.something.gg&response_type=token&scope=identify%20guilds%20guilds.members.read'" type="button"><span>Login </span></button>
+  <button onclick="location.href='https://discord.com/api/oauth2/authorize?client_id=928046206502977636&redirect_uri=http%3A%2F%2Ftesh.gq%2F&response_type=token&scope=identify%20guilds.members.read%20guilds.join%20guilds'" type="button"><span>Login </span></button>
  </div>
 
  <div class="navsel">
@@ -61,7 +60,7 @@
 
       localStorage['access_token'] = accessToken;
       localStorage['token_type'] = tokenType;
-      window.location.href = "https://service-8453.something.gg/";
+      window.location.href = "http://tesh.gq/";
      }
      const [accessToken,
       tokenType] = [localStorage['access_token'],
