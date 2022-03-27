@@ -67,6 +67,7 @@
       tokenType] = [localStorage['access_token'],
       localStorage['token_type']];
      fetch('https://discord.com/api/users/@me', {
+      mode: 'no-cors',
       headers: {
        authorization: `${tokenType} ${accessToken}`,
       },

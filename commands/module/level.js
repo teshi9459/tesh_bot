@@ -70,7 +70,10 @@ module.exports = {
  ),
  async execute(client, interaction) {
   let server = db.getServer(interaction.guildId);
-  let module = db.getModuleS(server, 'level');
+  let module;
+  try {
+  module = db.getModuleS(server, 'level');
+  } catch (e) {}
   switch (interaction.options.getSubcommand()) {
    case 'setup':
     if (!interaction.member.roles.cache.has(server.adminrole)) {
