@@ -28,7 +28,7 @@ module.exports = {
    console.log(archive.pointer() + ' total bytes');
    console.log('archiver has been finalized and the output file descriptor has closed.');
    if (archive.pointer() >= 8*1000*1000) {
-    fs.renameSync('./backup.zip', './web/public/backup.zip');
+    fs.renameSync('./backup.zip', './web/backup.zip');
     const row = new MessageActionRow()
     .addComponents(
      new MessageButton()
@@ -41,7 +41,7 @@ module.exports = {
     });
     setTimeout(function() {
      interaction.deleteReply();
-     fs.rmSync('./web/public/backup.zip', {
+     fs.rmSync('./web/backup.zip', {
       recursive: false
      });
     }, 3*61*1000);

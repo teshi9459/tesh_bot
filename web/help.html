@@ -2,23 +2,22 @@
 <html>
 <head>
  <meta charset="UTF-8">
- <meta name="description" content="Website for Tesh Bot">
- <meta name="keywords" content="Tesh Bot, Discord,Roleplay">
+ <meta lang="de">
+ <meta name="description" content="Dashboard für Tesh-Bot by Teshi">
+ <meta name="keywords" content="Tesh Bot, Discord, Roleplay, Teshboard">
  <meta name="author" content="Teshi">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <title>Teshboard</title>
- <link rel="stylesheet" href="style.css">
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+ <link rel="stylesheet" href="./style.css">
+ <base href="http://tesh.gq/" target="_blank">
 </head>
-
 <body>
  <nav>
   <div class="topnav">
-   <a class="home" href="index.html">Home</a>
-   <a href="analytics.html">Analytics</a>
-   <a href="settings.html">Settings</a>
-   <a class="active" href="help.html">Help</a>
-   <a href="about.html">About</a>
+   <a href="/">Home</a>
+   <a href="cp">Pannel</a>
+   <a class="active" href="help">Help</a>
+   <a href="feed">Feed</a>
   </div>
  </nav>
 
@@ -47,46 +46,6 @@
   <br />
   <div>
    <h1>Help</h1>
-   <script>
-    window.onload = () => {
-     const fragment = new URLSearchParams(window.location.hash.slice(1));
-     if (localStorage['access_token'] === undefined) {
-      const [accessToken,
-       tokenType] = [fragment.get('access_token'),
-       fragment.get('token_type')];
-      if (!accessToken) {
-       return document.getElementById('login').style.display = 'block';
-      }
-
-      localStorage['access_token'] = accessToken;
-      localStorage['token_type'] = tokenType;
-      window.location.href = "http://tesh.gq/";
-     }
-     const [accessToken,
-      tokenType] = [localStorage['access_token'],
-      localStorage['token_type']];
-     fetch('https://discord.com/api/users/@me', {
-      headers: {
-       authorization: `${tokenType} ${accessToken}`,
-      },
-     })
-     .then(result => result.json())
-     .then(response => {
-      const {
-       username, discriminator, avatar, id
-      } = response;
-      document.getElementById("userAvatar").src = "https://cdn.discordapp.com/avatars/"+id+"/"+avatar+".png?size=100";
-      document.querySelectorAll(".login").forEach(a=>a.style.display = "none");
-      document.querySelectorAll(".navsel").forEach(a=>a.style.display = "block");
-
-      for (let i = 0; i < document.getElementsByClassName('usertag').length; i++) {
-       document.getElementsByClassName('usertag')[i].innerText = username+'#'+discriminator;
-      }
-
-     })
-     .catch(console.error);
-    };
-   </script>
    <div class="helpnav">
     <a href="#help_setup">Setup</a>
     <a href="#help_module">Module</a>

@@ -17,7 +17,47 @@ font-family: Geneva, Verdana, sans-serif;
 #colors
 tesh: #aaeeff
 
+   <script>
+    window.onload = () => {
+     const fragment = new URLSearchParams(window.location.hash.slice(1));
+     if (localStorage['access_token'] === undefined) {
+      const [accessToken,
+       tokenType] = [fragment.get('access_token'),
+       fragment.get('token_type')];
+      if (!accessToken) {
+       return document.getElementById('login').style.display = 'block';
+      }
 
+      localStorage['access_token'] = accessToken;
+      localStorage['token_type'] = tokenType;
+      location.reload();
+     }
+     const [accessToken,
+      tokenType] = [localStorage['access_token'],
+      localStorage['token_type']];
+     fetch('https://discord.com/api/users/@me', {
+      mode: 'no-cors',
+      headers: {
+       authorization: `${tokenType} ${accessToken}`,
+      },
+     })
+     .then(result => result.json())
+     .then(response => {
+      const {
+       username, discriminator, avatar, id
+      } = response;
+      document.getElementById("userAvatar").src = "https://cdn.discordapp.com/avatars/"+id+"/"+avatar+".png?size=100";
+      document.querySelectorAll(".login").forEach(a=>a.style.display = "none");
+      document.querySelectorAll(".navsel").forEach(a=>a.style.display = "block");
+
+      for (let i = 0; i < document.getElementsByClassName('usertag').length; i++) {
+       document.getElementsByClassName('usertag')[i].innerText = username+'#'+discriminator;
+      }
+
+     })
+     .catch(console.error);
+    };
+   </script>
 
 
 

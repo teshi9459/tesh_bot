@@ -11,20 +11,29 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 var publicPath = path.join(__dirname, 'public');
 
+app.get('/', function(req, res) {
+ res.sendFile(__dirname+'/index.html');
+});
+app.get('/help', function(req, res) {
+ res.sendFile(__dirname+'/help.html');
+});
+app.get('/feed', function(req, res) {
+ res.sendFile(__dirname+'/feed.html');
+});
+app.get('/cp', function(req, res) {
+ res.sendFile(__dirname+'/pannel.html');
+});
 app.get('/download/backup', function(req, res) {
- const file = `${__dirname}/public/backup.zip`;
+ const file = `${__dirname}/backup.zip`;
  res.download(file);
 });
 
 
-router.get("/", function (req, res) {
- res.sendFile(path.join(__dirname, "/"));
+
+
+
+//The 404 Route (ALWAYS Keep this as the last route)
+app.get('*', function(req, res) {
+ res.sendFile(__dirname+'/404.html', 404);
 });
-
-
-app.get('/new_deposit', function (req, res) {
- res.sendfile(publicPath + '/new_deposit.html');
-});
-
-
 app.listen(port, () => console.log(`Web listening at http://localhost:${port}`));
