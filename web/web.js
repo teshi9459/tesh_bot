@@ -21,7 +21,7 @@ app.get('/feed', function(req, res) {
  res.sendFile(__dirname+'/feed.html');
 });
 app.get('/cp', function(req, res) {
- res.sendFile(__dirname+'/pannel.html');
+ res.sendFile(__dirname+'/panel.html');
 });
 app.get('/download/backup', function(req, res) {
  const file = `${__dirname}/backup.zip`;
