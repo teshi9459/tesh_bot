@@ -9,7 +9,7 @@ const {
 
 const app = express();
 
-app.use(express.json())
+app.use(express.json());
 app.use(express.static(path.join(__dirname, '/web/public')));
 
 //get - website
@@ -52,7 +52,7 @@ app.post('/api/server', function(req, res) {
 app.put('/api/server', function(req, res) {
  if (req.body.apikey === apikey) {
   sqlLib.setServer(req.body.guildId, req.body.adminroleId, req.body.teshroleId);
-  res.send(true)
+  res.send(true);
  } else {
   return res.status(400).send({
    message: 'wrong Api-Key!'
