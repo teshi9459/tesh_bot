@@ -10,21 +10,7 @@ Aktuell ist es ratsam ihn nur mit Aufsicht vom Host auf Server einzuladen.
 3. richte ihn selbst ein oder lass das den Host übernehmen
 4. entdecke die tollen Bot Features uwu
 
-## Aktive Server:
-[Internat](https://discord.gg/jeZ9USuZgA) | [WG](https://discord.gg/8ybsZUnhHD) | [Fantasy](https://discord.gg/qpdnyWStBe)
----|---|---
-![Discord](https://img.shields.io/discord/879756056346099722?label=%20) | ![Discord](https://img.shields.io/discord/895413069642072075?label=%20) | ![Discord](https://img.shields.io/discord/842687670803103774?label=%20)
-
-aktuelle Version: ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/teshi9459/tesh_bot?include_prereleases&label=%20)
-## Features
-- words
-<details markdown='1'><summary>zählt Wörter in Roleplay Nachrichten</summary>Schickt eine Warnung, bei einer Wortzahl die min≤≥max ist und speichert die Nachricht in einem erstellten Log Channel
-</details>
-- rooms
-<details markdown='1'><summary>Automatische Zimmerverteilung</summary>Roleplayer können sich selbst ein Zimmer aussuchen, in welches sie dann eingetragen werden. Das austragen muss ein Admin übernehmen.</details>
-- brackets
-<details markdown='1'><summary>Löscht Klammernachrichten (Kommentare)</summary>Wenn eine Nachricht (,){,},[ oder ] am Anfang oder Ende hat wird sie gelöscht. Leider geht das nur für nicht ganz so alte Nachrichten aber ca. 100 schafft er zu durchsuchen.
-</details>
+aktuelle Version: ![GitHub package.json version (subfolder of monorepo)](https://img.shields.io/github/package-json/v/teshi9459/tesh_bot?color=aaeeff&label=Ver&logo=github&style=for-the-badge)
 
 ## Commands
 Name | Command | Subcommand | Beschreibung | Status
