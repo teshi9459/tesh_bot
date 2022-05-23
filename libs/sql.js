@@ -13,22 +13,10 @@ module.exports = {
     return con;
   },
   setServer: function (guildId, adminroleId, teshroleId) {
-    let data = {
-      host: sql.ip,
-      user: sql.user,
-      password: sql.password,
-      database: "teshdb",
-    };
-    const con = new mysql.createConnection(data);
-    con.connect(function (err) {
-      if (err) throw err;
-      con.query(
-        `INSERT INTO guild (id, adminrole, teshrole) VALUES (${guildId},${adminroleId},${teshroleId})`,
-        function (err, result) {
-          if (err) throw err;
-        }
-      );
-    });
+    const con = this.connect("teshdb");
+    con.query(
+      `INSERT INTO guild (id, adminrole, teshrole) VALUES (${guildId},${adminroleId},${teshroleId})`
+    );
   },
   getServer: function (guildId, callback) {
     const con = this.connect("teshdb");
@@ -49,35 +37,40 @@ module.exports = {
       });
   },
   delServer: function (serverId, rek, options) {},
-  setUser: function (server, user, options) {
-    const obj = {
-      id: user.id,
-    };
-    t.setJ(`./DB/${server.id}/user/${user.id}/user.json`, obj, options);
-    this.setReports(server, obj, options);
-    if (options === true)
-      console.log(`db> set User ${user.tag} (${obj.id})@${server.id},`);
+  setChannels: function (server, options) {
+    t.setJ(
+      `./DB/${server.id}/channel.json`,
+      {
+        rp: [],
+      },
+      options
+    );
+    if (options === true) console.log(`db> set Channel @${server.id}`);
   },
-  getUser: function (server, userId, options) {
-    const user = t.getJ(`./DB/${server.id}/user/${userId}/user.json`, options);
-    if (options === true) console.log(`db> get User ${userId}@${server.id}`);
-    return user;
+  getChannels: function (guildId, callback) {
+    const con = this.connect("teshdb");
+    con
+      .query(`SELECT * FROM channel WHERE guild = '${guildId}'`)
+      .then((row) => {
+        let channels = row[0];
+        callback(channels);
+      });
   },
-  updateUser: function (server, user, options) {
-    t.setJ(`./DB/${server.id}/user/${user.id}/user.json`, user, options);
-    if (options === true)
-      console.log(`db> update User ${user.id}@${server.id}`);
-    return this.getUser(server, user.id, options);
+  newChannel: function (guildId, channel, type) {
+    const con = this.connect("teshdb");
+    con.query(
+      `INSERT INTO channel (id, guild, typdc, typth) VALUES (${channel.id},${guildId},'${channel.type}','${type}')`
+    );
   },
-  delUser: function (serverId, userId, rek, options) {
-    let path;
-    if (rek) {
-      path = `./DB/${serverId}/user/`;
-    } else {
-      path = `./DB/${serverId}/user/${userId}/user.json`;
-    }
-    t.delPath(path, options);
-    if (options === true) console.log(`db> del User ${userId}@${serverId}`);
+  delChannel: function (guildId, channel) {
+    const con = this.connect("teshdb");
+    con.query(
+      `DELETE FROM channel WHERE id = '${channel.id}' AND guild = '${guildId}';`
+    );
+  },
+  delChannels: function (server, options) {
+    t.delPath(`./DB/${server.id}/channel.json`, options);
+    if (options === true) console.log(`db> del Channels @${server.id}`);
   },
   setModule: function (server, user, module, options) {
     t.setJ(
@@ -138,48 +131,6 @@ module.exports = {
     t.delPath(`./DB/${server.id}/modules/${moduleId}.json`, options);
     if (options === true)
       console.log(`db> del ModuleS ${moduleId}@${server.id}`);
-  },
-  setChannels: function (server, options) {
-    t.setJ(
-      `./DB/${server.id}/channel.json`,
-      {
-        rp: [],
-      },
-      options
-    );
-    if (options === true) console.log(`db> set Channel @${server.id}`);
-  },
-  getChannels: function (server, options) {
-    const channels = t.getJ(`./DB/${server.id}/channel.json`, options);
-    if (options === true) console.log(`db> get Channel @${server.id}`);
-    return channels.rp;
-  },
-  newChannel: function (server, channel, options) {
-    let rp = this.getChannels(server, options);
-    rp.push(channel.id);
-    const channels = {
-      rp: rp,
-    };
-    t.setJ(`./DB/${server.id}/channel.json`, channels, options);
-    if (options === true)
-      console.log(
-        `db> add Channel ${channel.name}(${channel.id})@${server.id}`
-      );
-  },
-  delChannel: function (server, channel, options) {
-    const rp = this.getChannels(server, options);
-    const channels = {
-      rp: t.popA(rp, channel.id),
-    };
-    t.setJ(`./DB/${server.id}/channel.json`, channels, options);
-    if (options === true)
-      console.log(
-        `db> del Channel ${channel.name}(${channel.id})@${server.id}`
-      );
-  },
-  delChannels: function (server, options) {
-    t.delPath(`./DB/${server.id}/channel.json`, options);
-    if (options === true) console.log(`db> del Channels @${server.id}`);
   },
   setReports: function (server, user, options) {
     t.setJ(
