@@ -45,9 +45,9 @@ module.exports = {
     ),
   async execute(client, interaction) {
     sql.getServer(interaction.guildId, function (guild) {
-      if (!interaction.member.roles.cache.has(guild.adminrole)) {
+      if (!interaction.member.roles.cache.has(guild.teshrole)) {
         return interaction.reply({
-          content: `du brauchst <@&${guild.adminrole}> um das zu machen`,
+          content: `du brauchst <@&${guild.teshrole}> um das zu machen`,
           ephemeral: true,
         });
       }
