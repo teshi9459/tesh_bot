@@ -55,54 +55,107 @@ module.exports = {
         case "add":
           var channel = interaction.options.getChannel("channel");
           var sType = interaction.options.getString("typ");
-          if (channel.type === "GUILD_CATEGORY") sType += "Ct";
-          sql.getChannels(interaction.guildId, function (channels) {
-            for (let i = 0; i < channels.length; i++) {
-              if (channel.id == channels[i].id) {
-                const Embed = dc.makeSimpleEmbed(
-                  interaction,
-                  "#ff0000",
-                  "Falscher Channel",
-                  "Der Channel ist bereits aufgenommen."
-                );
-                return interaction.reply({ embeds: [Embed] });
-              }
-            }
-            sql.newChannel(interaction.guildId, channel, sType);
-            const Embed = dc.makeSimpleEmbed(
-              interaction,
-              "#33cc33",
-              "Channel hinzugefügt",
-              `Der Channel ist nun aufgenommen.\n${Formatters.channelMention(
-                channel.id
-              )} • \` ${sType} \``
-            );
-            return interaction.reply({ embeds: [Embed] });
-          });
-          break;
-        case "del":
-          var channel = interaction.options.getChannel("channel");
-          sql.getChannels(interaction.guildId, function (channels) {
-            if (channel !== null) {
-              for (let i = 0; i < channels.length; i++) {
-                if (channel.id == channels[i].id) {
-                  sql.delChannel(interaction.guildId, channel);
-                  const Embed = dc.makeSimpleEmbed(
-                    interaction,
-                    "#33cc33",
-                    "Channel entfernt",
-                    Formatters.channelMention(channel.id) + " wurde gelöscht."
+          if (channel.type === "GUILD_CATEGORY") {
+            sql.getChannels(interaction.guildId, function (channels) {
+              let liste = "";
+              for (let u = 0; u < channel.children.size; u++) {
+                let doppelt = false;
+                for (let i = 0; i < channels.length; i++) {
+                  if (channel.children.at(u).id == channels[i].id) {
+                    doppelt = true;
+                    break;
+                  }
+                }
+                if (!doppelt) {
+                  sql.newChannel(
+                    interaction.guildId,
+                    channel.children.at(u),
+                    sType
                   );
-                  return interaction.reply({ embeds: [Embed] });
+                  liste += `${Formatters.channelMention(
+                    channel.children.at(u).id
+                  )} • \` ${sType} \`\n`;
                 }
               }
               const Embed = dc.makeSimpleEmbed(
                 interaction,
-                "#ff0000",
-                "Falscher Channel",
-                "Der Channel ist nicht gelistet"
+                "#33cc33",
+                "Channel hinzugefügt",
+                `Die Channel aus ${Formatters.channelMention(
+                  channel.id
+                )} wurden nun aufgenommen.\n\n${liste}`
               );
               return interaction.reply({ embeds: [Embed] });
+            });
+          } else {
+            sql.getChannels(interaction.guildId, function (channels) {
+              for (let i = 0; i < channels.length; i++) {
+                if (channel.id == channels[i].id) {
+                  const Embed = dc.makeSimpleEmbed(
+                    interaction,
+                    "#ff0000",
+                    "Falscher Channel",
+                    "Der Channel ist bereits aufgenommen."
+                  );
+                  return interaction.reply({ embeds: [Embed] });
+                }
+              }
+              sql.newChannel(interaction.guildId, channel, sType);
+              const Embed = dc.makeSimpleEmbed(
+                interaction,
+                "#33cc33",
+                "Channel hinzugefügt",
+                `Der Channel ist nun aufgenommen.\n${Formatters.channelMention(
+                  channel.id
+                )} • \` ${sType} \``
+              );
+              return interaction.reply({ embeds: [Embed] });
+            });
+          }
+          break;
+        case "del":
+          var channel = interaction.options.getChannel("channel");
+
+          sql.getChannels(interaction.guildId, function (channels) {
+            if (channel !== null) {
+              if (channel.type === "GUILD_CATEGORY") {
+                let liste = "";
+                for (let u = 0; u < channel.children.size; u++) {
+                  sql.delChannel(interaction.guildId, channel.children.at(u));
+                  liste += `${Formatters.channelMention(
+                    channel.children.at(u).id
+                  )}\n`;
+                }
+                const Embed = dc.makeSimpleEmbed(
+                  interaction,
+                  "#33cc33",
+                  "Channel entfernt",
+                  `Alle Channel aus ${Formatters.channelMention(
+                    channel.id
+                  )} gelöscht.\n\n${liste}`
+                );
+                return interaction.reply({ embeds: [Embed] });
+              } else {
+                for (let i = 0; i < channels.length; i++) {
+                  if (channel.id == channels[i].id) {
+                    sql.delChannel(interaction.guildId, channel);
+                    const Embed = dc.makeSimpleEmbed(
+                      interaction,
+                      "#33cc33",
+                      "Channel entfernt",
+                      Formatters.channelMention(channel.id) + " wurde gelöscht."
+                    );
+                    return interaction.reply({ embeds: [Embed] });
+                  }
+                }
+                const Embed = dc.makeSimpleEmbed(
+                  interaction,
+                  "#ff0000",
+                  "Falscher Channel",
+                  "Der Channel ist nicht gelistet"
+                );
+                return interaction.reply({ embeds: [Embed] });
+              }
             } else {
               let index = 0;
               for (let i = 0; i < channels.length; i++) {
@@ -111,10 +164,9 @@ module.exports = {
                 );
                 if (obj === undefined) {
                   index++;
-                  sql.delChannel(interaction.guildId, channels[i].id);
+                  sql.delChannel(interaction.guildId, channels[i]);
                 }
               }
-
               const Embed = dc.makeSimpleEmbed(
                 interaction,
                 "#33cc33",
