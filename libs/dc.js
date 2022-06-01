@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 module.exports = {
   makeSimpleEmbed: function (interaction, color, title, text) {
-    const Embed = new MessageEmbed()
+    return new MessageEmbed()
       .setColor(color)
       .setTitle(title)
       .setDescription(text)
@@ -14,7 +14,6 @@ module.exports = {
           "-Bot",
         iconURL: interaction.guild.iconURL(),
       });
-    return Embed;
   },
   getChannel: function (message, id) {
     const obj = message.guild.channels.cache.find((c) => c.id == id);
