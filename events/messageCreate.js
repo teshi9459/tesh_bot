@@ -1,47 +1,62 @@
 const fs = require("fs");
-const db = require("../libs/db");
-const tk = require("../exports/slash/ticket");
+const { Collection } = require("discord.js");
 module.exports = {
-  name: "messageCreate",
-  execute(client, message) {
-    try {
-      const ticketFiles = fs
-        .readdirSync(`./DB/${message.guildId}/tickets/`)
-        .filter((file) => file.endsWith(".json"));
-      for (const file of ticketFiles) {
-        const ticket = require(`../DB/${message.guildId}/tickets/${file}`);
-        if (ticket.channel == message.channel.id) {
-          tk.save(message);
-          return;
-        }
-      }
-    } catch (e) {}
+  name: "interactionCreate",
+  async execute(client, interaction) {
+    if (interaction.isButton()) return;
+    if (interaction.isSelectMenu()) return;
+    client.commands = new Collection();
 
-    if (message.author.bot) return;
-    const commandFiles = fs
-      .readdirSync("./exports/message/")
-      .filter((file) => file.endsWith(".js"));
-    for (const file of commandFiles) {
-      const modul = require(`../exports/message/${file}`);
-      if (
-        fs.existsSync(`./DB/${message.guildId}/modules/${modul.data.id}.json`)
-      ) {
-        const config = db.getModuleS(
-          {
-            id: message.guildId,
-          },
-          modul.data.id
-        );
-        if (!config.enabled) return;
-        try {
-          modul.start(message);
-        } catch (error) {
-          console.error(error);
-          message.reply(
-            "Ein Fehler ist aufgetreten qwq\n*kontaktiere den Developer*"
-          );
-        }
+    const commandFolder = fs.readdirSync("./commands");
+
+    for (const folder of commandFolder) {
+      const commandFiles = fs
+        .readdirSync("./commands/" + folder)
+        .filter((file) => file.endsWith(".js"));
+
+      for (const file of commandFiles) {
+        const command = require(`../commands/${folder}/${file}`);
+        client.commands.set(command.data.name, command);
       }
+    }
+
+    const date = new Date().toISOString();
+    console.log(
+      `\n${date}>> ${interaction.user.tag} triggered an interaction (${interaction.commandName}).`
+    );
+    let content;
+    try {
+      content = `\n${date}>>${
+        interaction.commandName
+      }.${interaction.options.getSubcommand()}@${interaction.user.tag}#${
+        interaction.channel.name
+      }`;
+    } catch (e) {
+      content = `\n${date}>>${interaction.commandName}@${interaction.user.tag}#${interaction.channel.name}`;
+    }
+
+    fs.writeFile(
+      `./DB/${interaction.guildId}/interactions.log`,
+      content,
+      {
+        flag: "a+",
+      },
+      (err) => {}
+    );
+
+    if (!interaction.isCommand()) return;
+
+    const command = client.commands.get(interaction.commandName);
+
+    if (!command) return;
+    try {
+      await command.execute(client, interaction);
+    } catch (error) {
+      console.error(error);
+      await interaction.channel.send({
+        content: "Ein Fehler ist aufgetreten qwq\n*kontaktiere den Developer*",
+        ephemeral: true,
+      });
     }
   },
 };

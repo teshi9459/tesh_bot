@@ -1,21 +1,19 @@
 const t = require("./tools");
 const fs = require("fs");
-const mysql = require("mysql");
 const Sequelize = require("sequelize");
 const { sql } = require("../config/config.json");
 module.exports = {
   connect: function (db) {
-    const con = new Sequelize(`${db}`, sql.user, sql.password, {
+    return new Sequelize(`${db}`, sql.user, sql.password, {
       dialect: "mysql",
       host: sql.ip,
       port: sql.port,
     });
-    return con;
   },
   setServer: function (guildId, adminroleId, teshroleId) {
     const con = this.connect("teshdb");
     con.query(
-      `INSERT INTO guild (id, adminrole, teshrole) VALUES (${guildId},${adminroleId},${teshroleId})`
+      `INSERT INTO guild (id, adminrole, teshrole, moduls) VALUES (${guildId},${adminroleId},${teshroleId},'setup:')`
     );
   },
   getServer: function (guildId, callback) {
@@ -56,6 +54,26 @@ module.exports = {
         callback(channels);
       });
   },
+  /**
+   * find channel in Db
+   * @param {Array.<String>} colum          colums to check inorder.
+   * @param {Array.<String>} value          values for colums inorder.
+   * @param {String} connect          connection beetween colums (AND/OR).
+   * @param {Function}       callback        callback function.
+   */
+  getChannel: function (colum, value, connect, callback) {
+    //colum und value in arrays, connect AND/OR
+    const con = this.connect("teshdb");
+    let paras = "";
+    for (const i of colum) {
+      paras += ` ${colum[i]} = ${value[i]} `;
+      if (colum.length > 1) paras += connect + " ";
+    }
+    con.query(`SELECT * FROM channel WHERE ` + paras).then((row) => {
+      let channels = row[0];
+      callback(channels);
+    });
+  },
   newChannel: function (guildId, channel, type) {
     const con = this.connect("teshdb");
     con.query(
@@ -68,9 +86,66 @@ module.exports = {
       `DELETE FROM channel WHERE id = '${channel.id}' AND guild = '${guildId}';`
     );
   },
-  delChannels: function (server, options) {
-    t.delPath(`./DB/${server.id}/channel.json`, options);
-    if (options === true) console.log(`db> del Channels @${server.id}`);
+  delChannels: function (guildId) {
+    const con = this.connect("teshdb");
+    con.query(`DELETE FROM channel WHERE guild = '${guildId}';`);
+  },
+  setLevel: function (guildId, guildMods, channel) {
+    const con = this.connect("teshdb");
+    con.query(
+      `INSERT INTO channel (id, guild, typdc, typth) VALUES (${channel.id},${guildId},'${channel.type}','level')`
+    );
+    con.query(
+      `INSERT INTO level_msg (id, \`index\`, role, \`text\`) VALUES ('${guildId}', 0, NULL, 'neues Level!');`
+    );
+    con.query(
+      `UPDATE guild SET level_power = true , moduls = '${
+        guildMods + "level"
+      }' WHERE id = ${guildId};`
+    );
+  },
+  getLevel: function (guildId, callback) {
+    const con = this.connect("teshdb");
+    con.query(`SELECT * FROM level WHERE guild = '${guildId}'`).then((row) => {
+      let levels = row[0];
+      callback(levels);
+    });
+  },
+  getLevelUser: function (guildId, userId, callback) {
+    const con = this.connect("teshdb");
+    con
+      .query(
+        `SELECT * FROM level WHERE guild = '${guildId}' AND id = '${userId}'`
+      )
+      .then((row) => {
+        let level = row[0];
+        callback(level);
+      });
+  },
+  updateLevelUser: function (guildId, userId, xp) {
+    const con = this.connect("teshdb");
+    this.getLevelUser(msg.guildId, msg.author.id, function (user) {
+      if (user == undefined) {
+        con.query(
+          `INSERT INTO level (guild, id, xp, ping) VALUES ('${guildId}', '${userId}', ${xp}, true)`
+        );
+      } else {
+        con.query(
+          `UPDATE level SET xp = ${xp} WHERE id = ${userId} AND guild = ${guildId};`
+        );
+      }
+    });
+  },
+  getLevelMsg: function (guildId, level, callback) {
+    const con = this.connect("teshdb");
+    con
+      .query(
+        `SELECT * FROM level_msg WHERE guild = ${guildId} AND index = ${level}`
+      )
+      .then((row) => {
+        let lvmsg = row[0];
+        callback(lvmsg);
+      });
   },
   setModule: function (server, user, module, options) {
     t.setJ(
