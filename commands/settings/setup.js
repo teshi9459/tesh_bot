@@ -20,7 +20,7 @@ module.exports = {
           "Tesh Rolle (kann Moderation-Commands benutzen)(bei auslassen wird eine Rolle erstellt)"
         )
     ),
-  async execute(client, interaction) {
+  async execute(interaction) {
     sql.getServer(interaction.guildId, function (server) {
       if (server !== undefined) {
         const Embed = dc.makeSimpleEmbed(

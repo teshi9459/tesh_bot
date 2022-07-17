@@ -3,7 +3,7 @@ const db = require("../libs/db");
 const tk = require("../exports/slash/ticket");
 module.exports = {
   name: "messageCreate",
-  execute(client, message) {
+  execute(message) {
     try {
       const ticketFiles = fs
         .readdirSync(`./DB/${message.guildId}/tickets/`)

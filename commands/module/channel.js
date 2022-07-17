@@ -43,7 +43,7 @@ module.exports = {
         .setName("list")
         .setDescription("zeigt alle aufgenommenen Channel")
     ),
-  async execute(client, interaction) {
+  async execute(interaction) {
     sql.getServer(interaction.guildId, function (guild) {
       if (!interaction.member.roles.cache.has(guild.teshrole)) {
         return interaction.reply({

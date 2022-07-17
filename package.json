@@ -1,31 +1,31 @@
 {
- "name": "teshbot",
- "version": "2.2.0",
- "description": "tesh bot halt",
- "main": "client.js",
- "scripts": {
-  "test": "echo \"Test Start:\" && node client.js && exit 1",
-  "dev": "pm2 start client.js --watch && pm2 start api.js --watch",
-  "coms": "node newcoms.js",
-  "comg": "node newcomg.js",
-  "monit": "npx pm2 start index.js -f && npx pm2 monit",
-  "log": "npx pm2 start index.js -f && npx pm2 logs --out",
-  "start": "npx pm2 start index.js",
-  "boot": "clear;echo FETCH DATA;git pull origin main; npm install; npx pm2 kill;  echo STARTE WEBSERVER; npx pm2 start web/web.js -f; echo STARTE BOT CLIENT; npx pm2 start index.js -f; echo ALL SCRIPTS ARE RUNNING;  npx pm2 save --force; npx pm2 list;"
- },
- "author": "Teshi",
- "license": "MIT",
- "dependencies": {
-  "@discordjs/builders": "^0.7.0",
-  "@discordjs/rest": "^0.1.0-canary.0",
-  "archiver": "^5.3.0",
-  "discord-api-types": "^0.24.0",
-  "discord.js": "^13.6.0",
-  "express": "^4.17.3",
-  "jimp": "^0.16.1",
-  "mysql": "^2.18.1",
-  "mysql2": "^2.3.3",
-  "sequelize": "^6.17.0",
-  "uuid": "^7.0.3"
- }
+  "name": "teshbot",
+  "version": "2.2.0",
+  "description": "tesh bot halt",
+  "main": "client.js",
+  "scripts": {
+    "test": "echo \"Test Start:\" && node client.js && exit 1",
+    "dev": "pm2 start client.js --watch && pm2 start api.js --watch",
+    "coms": "node newcoms.js",
+    "comg": "node newcomg.js",
+    "monit": "npx pm2 start index.js -f && npx pm2 monit",
+    "log": "npx pm2 start index.js -f && npx pm2 logs --out",
+    "start": "npx pm2 start index.js",
+    "boot": "echo FETCH DATA;git pull origin main; npm install; npx pm2 kill;  echo STARTE WEBSERVER; npx pm2 start web/web.js -f; echo STARTE BOT CLIENT; npx pm2 start index.js -f; echo ALL SCRIPTS ARE RUNNING;  npx pm2 save --force; npx pm2 list;"
+  },
+  "author": "Teshi",
+  "license": "MIT",
+  "dependencies": {
+    "@discordjs/builders": "^0.7.0",
+    "@discordjs/rest": "^0.1.0-canary.0",
+    "archiver": "^5.3.0",
+    "discord-api-types": "^0.24.0",
+    "discord.js": "^13.6.0",
+    "express": "^4.17.3",
+    "jimp": "^0.16.1",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.17.0",
+    "uuid": "^7.0.3"
+  }
 }

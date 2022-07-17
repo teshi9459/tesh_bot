@@ -4,7 +4,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("info")
     .setDescription("Infos und Links"),
-  async execute(client, interaction) {
+  async execute(interaction) {
     const Embed = new MessageEmbed()
       .setColor("#aaeeff")
       .setTitle("Infosheet")
